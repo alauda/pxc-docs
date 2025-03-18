@@ -1,0 +1,54 @@
+---
+sourceSHA: e1720ef70de5acc3433ec1bbccb7317d8c348e9934bcf6405aa845eff8430a4a
+---
+
+# Restart Instance
+
+## Function Overview
+
+If an instance encounters operational faults, excessive connection counts, or other unknown issues that cannot be identified during its operation, problems can be resolved by restarting the instance.
+
+## Precautions
+
+During the restart process, Pods will be restarted one by one, which may cause a temporary interruption of services.
+
+## Prerequisites
+
+The instance must be in a Running state.
+
+**Note:**
+
+If the instance is in a Processing state, it indicates that the instance might be starting normally; please be patient.
+
+If the instance fails to start or is abnormal, meaning the instance is in a Processing or Error state, it will automatically restart after the health check times out; please be patient.
+
+## Operational Steps
+
+<Tabs>
+  <Tab label="Command Line Operation">
+    1. Restart the instance
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    spec:
+        pxc:
+          pxc:
+              annotations:
+                  percona.com/Restart-time: '$(date -u +'%Y-%m-%dT%H:%M:%SZ')'
+          proxysql:
+              annotations:
+                  percona.com/Restart-time: '$(date -u +'%Y-%m-%dT%H:%M:%SZ')'    
+    '
+    ```
+  </Tab>
+
+  <Tab label="UI Operation">
+    1. Click on **MySQL-PXC** in the left navigation bar.
+
+    2. Click on ***Namespace Name***.
+
+    3. Click on ***Instance Name***.
+
+    4. Click **Actions** > **Restart**, and confirm.
+  </Tab>
+</Tabs>

@@ -1,0 +1,45 @@
+---
+sourceSHA: f35a6432de5d14ec8f08a3b30d7b41e0c55cb1eba6d465e6c1f01599b8f8daa6
+---
+
+# Log Query
+
+## Function Introduction
+
+Understand the logs during the instance runtime from the container level, such as MySQL error logs. Proper use of logs can help you quickly locate issues and handle faults and exceptions.
+
+## Operation Steps
+
+<Tabs>
+  <Tab label="Command Line Operation">
+    1. Check all related pods of the instance, including pxc pod and proxysql pod.
+
+    ```bash
+    kubectl get pod -n $namespace -l "middleware.instance/name=$name"
+    ```
+
+    2. View log queries for a specific pod
+
+    ```bash
+    kubectl logs -n $namespace $pod
+    ```
+  </Tab>
+
+  <Tab label="UI Operation">
+    ### UI Operation
+
+    1. In the left navigation bar, click **MySQL-PXC**.
+
+    2. Click on ***Namespace Name***.
+
+    3. Click on ***Instance Name*** .
+
+    4. In the **Logs** tab, set the search criteria.
+
+       - To find the logs of a specific Pods, which are MySQL replicas: Under **Pods**, select a pod and click **Search**.
+
+       - To find logs within a specific time range: Under **Time Range**, select a time period.
+
+    5. Wait a moment and view the results.
+  </Tab>
+</Tabs>

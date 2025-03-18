@@ -1,0 +1,30 @@
+---
+weight: 10
+sourceSHA: b046309deef51894ef1a935188709297079e8bfa028fedf46aee98bf0fc09e5c
+---
+
+# Introduction
+
+Alauda Database for MySQL-PXC operates on Kubernetes using synchronous replication and is based on Percona XtraDB Cluster, which is an open-source distribution of MySQL. Alauda Database for MySQL-PXC provides the capability to automate the deployment and management of objects within the Percona XtraDB Cluster, and can also be used to start new Percona XtraDB Cluster instances or scale existing environments. With Alauda Database for MySQL-PXC, you can easily deploy and manage highly available MySQL clusters.
+
+## Core Advantages
+
+- **Automated Management**: Automates the management of MySQL clusters through the Percona Operator, simplifying operational tasks.
+- **High Availability**: Based on Percona XtraDB Cluster, it provides synchronous replication and high availability to ensure continuous operation of business.
+- **Cluster Scaling and Shrinking**: Supports cluster scaling and shrinking through simple parameter adjustments to meet dynamic load demands.
+- **Automated Backup**: Supports scheduled backups and can store backup files in PVC or S3 storage, ensuring data security.
+- **Proxy Support**: Integrates ProxySQL as a proxy for the MySQL cluster, automatically deploying and configuring it to enhance database access performance and scalability.
+- **Flexible Configuration**: Supports parameter templates, allowing for customized cluster configurations to meet diverse user needs.
+
+## Use Cases
+
+- **Highly Available MySQL Clusters**: Suitable for database systems that require high availability, particularly for mission-critical applications.
+- **Automated Database Operations**: Offers automated MySQL deployment, scaling, backup, and recovery functions for enterprises, reducing manual intervention.
+- **Distributed Database Architecture**: Used to build distributed database architectures based on Kubernetes, supporting elastic scaling.
+- **Multi-Cloud and Hybrid Cloud Environments**: Supports deploying MySQL clusters across multiple cloud environments to achieve higher fault tolerance and business continuity.
+
+## Usage Limitations
+
+- **Supported Version**: Currently only supports MySQL version 5.7.
+- **Minimum Replica Requirement**: It is recommended to configure at least three replicas to ensure high availability.
+- **Hardware Requirements**: Ensure that nodes have sufficient resources to support the high-performance operation of the database during deployment.

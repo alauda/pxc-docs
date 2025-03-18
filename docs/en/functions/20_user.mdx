@@ -1,0 +1,71 @@
+---
+sourceSHA: dd08cf381152319c783d0efcaa484b7dd6e542d0938fa57bcd16808c539775f9
+---
+
+# User Management
+
+## Function Overview
+
+This feature provides a graphical user management function. It is recommended that you assign database users correspondingly to database developers based on usage needs.
+
+## Prerequisites
+
+Ensure that the instance is in **Running** status.
+
+## Create User
+
+Create a user and configure permissions for that user. The platform will simultaneously generate user authentication credentials for Kubernetes resources - **Secret Dictionary**. For applications using MySQL, MySQL username and password can be referenced in Pods through the Secret Dictionary. The Secret Dictionary will automatically synchronize user information; do not modify the configurations within it.
+
+<Tabs>
+  <Tab label="Interface Operation">
+    #### Create User
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Click ***Namespace Name***.
+
+    3. Click ***Instance Name***.
+
+    4. In the **User Management** tab, click **Create User**.
+
+    5. Set user information.
+
+       **Note**: Please securely store your password. To reduce the risk of password leakage, it is recommended to update the password regularly.
+
+    6. To ensure the user can operate normally, please promptly assign permissions to the user.
+
+    7. Click **Create**.
+
+    #### Add Secret Dictionary (for Non-Platform Created Users)
+
+    If a database user was created through a non-platform method, please manually create the corresponding Secret Dictionary for them. The **Secret Dictionary** is the user authentication credentials used by Kubernetes resources. If an application needs to use MySQL, the MySQL username and password can be referenced in Pods through the Secret Dictionary.
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Click ***Namespace Name***.
+
+    3. Click ***Instance Name***.
+
+    4. In the **User Management** tab, click ***User Name***.
+
+    5. Enter the password set during user creation, then click **Add**.
+
+    #### Update User
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Click ***Namespace Name***.
+
+    3. Click ***Instance Name***.
+
+    4. Go to the **User Management** tab.
+
+       - To update the password: click **Update Password** next to the user.
+
+       - To update user permissions (for non-**root** users): click ***User Name***, then in the user details, click **Update Permissions**.
+
+    5. Modify the configurations.
+
+    6. Click **Update**.
+  </Tab>
+</Tabs>

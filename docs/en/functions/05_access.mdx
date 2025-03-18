@@ -1,0 +1,120 @@
+---
+sourceSHA: 813c414aab2694f834e402fa0217436393aee1ac1cb0dab0274ea622f9738b7d
+---
+
+# Access Methods
+
+## Function Overview
+
+This functionality is used to connect to the MySQL cluster database in Kubernetes and supports multiple access methods including NodePort, LoadBalancer, and service DNS.
+
+## Operation Steps
+
+<Tabs>
+  <Tab label="Command Line Operations">
+    1. Access the instance using service DNS within the cluster
+
+    ```bash
+    mysql -u$username -p$password -h$name.$namespace
+    ```
+
+    2. Access the instance using NodePort from outside the cluster
+
+    - Enable NodePort
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type merge -p '
+    spec:
+      pxc:
+        proxysql:
+          serviceType: NodePort
+    '
+    ```
+
+    - Check NodePort
+
+    ```bash
+    kubectl get svc -n $namespace $name-proxysql -o jsonpath='{.spec.ports[0].nodePort}'
+    ```
+
+    - Access the instance using NodePort
+
+    ```bash
+    mysql -u$username -p$password -h$nodeip -P$nodeport
+    ```
+
+    3. Access the instance using LoadBalancer from outside the cluster
+
+    - Enable LoadBalancer
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type merge -p '
+    spec:
+      pxc:
+        proxysql:
+          serviceType: LoadBalancer
+    '
+    ```
+  </Tab>
+
+  <Tab label="UI Operations">
+    #### Retrieve Account Information
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Expand the cluster and click on the namespace.
+
+    3. Click on ***Instance Name***.
+
+    4. In the **User Management** tab, obtain the username and password.
+
+    #### Retrieve Connection Information
+
+    ##### For In-Cluster Access
+
+    After the instance is created, the information for **in-cluster** access can be found in the instance's **Access Methods** tab.
+
+    | Parameter               | Description                                                                                                                                                                                               |
+    | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **Internal Routing Address** | The unified entry point to access the instance from within the cluster, including the internal routing name, IP address, and port number. **Note**: The internal routing name must be converted to a [DNS name](https://kubernetes.io/zh/docs/concepts/services-networking/dns-pod-service/#pod-dns-config), which is `{Internal Routing Name}.{Namespace Name}.svc.cluster.local` for accessing the instance. |
+    | **MySQL Node Access Address** | Comprised of the names and port numbers of the pxc nodes in the instance.                                                                                                                                 |
+
+    ##### For External Access
+
+    First, you need to add TCP listener ports for the LoadBalancer in the instance's **Access Methods** tab to receive connection requests from **external** clients.
+
+    ##### Operation Steps
+
+    1. In the **External Access** area, click **Add Listener Port**.
+
+    2. Choose the LoadBalancer.
+
+    3. Refer to the following instructions to configure the relevant parameters.
+
+       | Parameter        | Description                                                    |
+       | ---------------- | -------------------------------------------------------------- |
+       | **Internal Routing Group** | The incoming traffic will be distributed to the internal routing's ports by default.                            |
+       | **Session Persistence**  | If session persistence is based on **source address hash**, access requests from the same IP address will always be forwarded to the backend service corresponding to the internal routing group. |
+
+    4. Click **Add**.
+
+    5. Access the instance
+       It is recommended to use the [Standard MySQL Client](https://downloads.mysql.com/archives/shell/) to access the MySQL-PXC instance.
+
+    - Access from within the cluster: In the instance details page, click the **Terminal Console** in the top right corner to connect to the MySQL nodes. If you are connecting to a node within this instance, you can omit the `-h` parameter.
+
+      ```
+      mysql -h{Internal Routing Name}.{Namespace Name}.svc.cluster.local -u{Username} -p{Password}
+
+      or
+
+      mysql -h{Internal Routing IP Address} -u{Username} -p{Password}
+      ```
+
+    - Access from outside the cluster
+
+      ```
+      mysql -h{LoadBalancer IP} -P{Listener Port} -u{Username} -p{Password}
+      ```
+  </Tab>
+</Tabs>

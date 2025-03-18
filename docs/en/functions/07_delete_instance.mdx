@@ -1,0 +1,46 @@
+---
+sourceSHA: a2f3980383d6074169c0cbe5e85dd7db46d41fa11faf4e9afb650a98899929d8
+---
+
+# Delete Instance
+
+## Feature Overview
+
+This feature is used to delete MySQL-PXC instances. Users can delete a specified instance by specifying the instance name and namespace. After deleting the instance, you can choose whether to retain the instance data. If the instance data is not retained, it will be permanently deleted and cannot be recovered.
+
+## Operation Steps
+
+<Tabs>
+  <Tab label="Command Line Operations">
+    1. Determine whether to retain data
+
+    - Retain data and execute the command
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type json -p '[{"op": "add", "path": "/metadata/finalizers/-", "value": "delete-pvc"}]'
+    ```
+
+    - Do not retain data and execute the command
+
+    ```bash
+    current_finalizers=$(kubectl get mysql -n $namespace $name -o jsonpath='{.metadata.finalizers}' | jq --arg f "delete-pvc" 'map(select(. != $f))')
+    kubectl patch mysql -n $namespace $name --type merge -p "{\"metadata\":{\"finalizers\":$current_finalizers}}"
+    ```
+
+    2. Delete the instance
+
+    ```bash
+    kubectl delete mysql -n $namespace $name
+    ```
+  </Tab>
+
+  <Tab label="GUI Operations">
+    1. Click on MySQL-PXC in the left navigation bar.
+
+    2. Click on the namespace name.
+
+    3. Click on the instance name.
+
+    4. Click on Actions > Delete and confirm.
+  </Tab>
+</Tabs>

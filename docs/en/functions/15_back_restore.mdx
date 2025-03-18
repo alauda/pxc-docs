@@ -1,0 +1,208 @@
+---
+sourceSHA: df0cded3e407d1481ee0fa8bb3b3c2c354045d9f07e57b23367768ca55a19a40
+---
+
+# Backup and Recovery
+
+## Feature Overview
+
+Database backup and recovery are vital functions for ensuring data security and business continuity. By regularly backing up the database, data can be quickly restored in the event of data loss, corruption, or operational errors, thereby minimizing business disruption and data loss.
+
+## Prerequisites:
+
+Before performing a backup, please declare storage based on the volume of data. You may choose one of the following two methods.
+
+- Persistent Volume Claim (PVC, Kubernetes PersistentVolumeClaim): A persistent volume claim encapsulates the request configuration for storage resources and automatically matches suitable persistent volumes in the cluster based on the requested access mode, storage size, and other information. You can configure the persistent volume claim in the Container Platform.
+
+- External S3 Storage: S3 (Amazon Simple Storage Service) is an object storage service provided by Amazon. If you need to back up data to your own S3 bucket, please confirm with the administrator that the S3 storage has been integrated into your project.
+
+## Operational Steps
+
+<Tabs>
+  <Tab label="Command Line Operations">
+    1. Configure Storage Location
+
+    - Using PVC for storage
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    spec:
+      pxc:
+        backup:
+          storages:
+            $(storageName):
+              type: filesystem
+              volume:
+                persistentVolumeClaim:
+                  accessModes:
+                    - ReadWriteOnce
+                  resources:
+                    requests:
+                      storage: ${size}Gi
+                  storageClassName: ${storageClass}
+    ```
+
+    - Using S3 for storage
+      Create S3 secret
+
+    ```bash
+    kubectl -n $namespace create secret generic $(backupSecretName) --from-literal=AWS_ACCESS_KEY_ID=$(accessKeyId) --from-literal=AWS_SECRET_ACCESS_KEY=$(secretAccessKey)
+    ```
+
+    Configure S3 storage
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    spec:
+      pxc:
+        backup:
+          storages:
+            $(storageName):
+              type: s3
+              s3:
+                bucket: $(bucket)
+                credentialsSecret: $(backupSecretName)
+                endpointUrl: $(endpointUrl)
+    ```
+
+    2. Automatic Backup
+       Add the automatic backup configuration in the CR's spec.pxc.backup, where the schedule field defines the backup cycle. The storageName field refers to the backup storage name created in Step 1.
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    spec:
+      pxc:
+        backup:
+          schedule:
+          - keep: 5
+            name: daily-backup
+            schedule: 0 0 * * *
+            storageName: $(storageName)
+    '
+    ```
+
+    3. Manual Backup
+
+    ```bash
+    kubectl -n $namespace apply -f - <<EOF
+    apiVersion: pxc.percona.com/v1
+    kind: PerconaXtraDBClusterBackup
+    metadata:
+      labels:
+        cluster: $name
+        trigger.type: manual
+      name: $backupName
+      namespace: $namespace
+    spec:
+      pxcCluster: $name
+      storageName: $storageName
+    EOF
+    ```
+
+    4. Check Backup Status
+
+    ```bash
+    kubectl get PerconaXtraDBClusterBackup -n $namespace $backupName 
+    ```
+
+    5. Restore Using Backup
+
+    ```bash
+    apiVersion: pxc.percona.com/v1
+    kind: PerconaXtraDBClusterRestore
+    metadata:
+      labels:
+        cluster: $name
+      name: $restoreName
+      namespace: $namespace
+    spec:
+      backupName: $backupName
+      pxcCluster: $name
+    EOF
+    ```
+  </Tab>
+
+  <Tab label="UI Operations">
+    #### Immediate Backup (Full)
+
+    Immediately back up the running MySQL-PXC instance.
+
+    ##### Prerequisites
+
+    Ensure the instance is in **Running** status.
+
+    ##### Operational Steps
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Click the ***namespace name***.
+
+    3. Click the ***instance name***.
+
+    4. Click **Create Data Backup** in the **Backup and Recovery** tab.
+
+    5. Set the parameters and click **Create**. The duration of the backup depends on the volume of data and network conditions; please be patient.
+
+    #### Automatic Backup (Full)
+
+    Specify the backup time; after it reaches the designated time, the platform will automatically back up the MySQL-PXC instance and perform periodic backups.
+
+    ##### Operational Steps
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Click the ***namespace name***.
+
+    3. Click the ***instance name***.
+
+    4. Click edit in the **Backup and Recovery** tab.
+
+    5. Enable **Automatic Backup** and set the parameters.
+
+       **Note**: The **Storage Location** is the S3 storage available for the current project.
+
+    6. Click **Update**.
+
+    **Explanation**:
+
+    - The timestamp in the automatic backup name is in UTC time (same as Controller Manager); in this example, it indicates that the backup started executing at 18:00 Beijing time on February 2, 2021.
+
+    - If it is time for automatic backup but the instance is not in **Running** status, the platform will wait until the instance is ready to start the backup.
+
+    #### Restore Instance
+
+    Restore backup data to the target instance.
+
+    ##### Prerequisites
+
+    Ensure the target instance is in **Running** status.
+
+    ##### Operational Steps
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Click the ***namespace name***.
+
+    3. Click the ***instance name***.
+
+    4. Click **Restore** in the **Backup and Recovery** tab.
+
+    5. Select the target instance and click **Restore**. Please be patient until the target instance shows **Restore Successful** status.
+
+    #### Delete Backup
+
+    Supports the deletion of backup data.
+
+    ##### Operational Steps
+
+    1. Click **MySQL-PXC** in the left navigation bar.
+
+    2. Click the ***namespace name***.
+
+    3. Click the ***instance name***.
+
+    4. Click **Delete** in the **Backup and Recovery** tab and confirm.
+
+       When S3 backup data is deleted, the data in S3 storage will also be deleted.
+  </Tab>
+</Tabs>

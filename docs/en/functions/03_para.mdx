@@ -1,0 +1,70 @@
+---
+sourceSHA: 9601732b56782bb65a449fb8321f07c8d039d9eb77eb3ae92dab2274ed259dc3
+---
+
+# Parameter Configuration
+
+## Function Overview
+
+Configuring appropriate MySQL parameters based on business scenarios can help the database achieve optimal performance and better support business operations. By default, MySQL-PXC instances use system parameters provided by MySQL and Percona. You can also conveniently configure these parameters through the interface.
+
+The platform provides parameter templates to define a series of MySQL parameters that you expect. When creating an instance, you can batch modify the default parameters using the parameter template, while parameters not covered in the template will retain their default values. After the instance is running normally, you can update MySQL parameters.
+
+For more parameter information, please refer to the [MySQL Official Website](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html) and [Percona Official Website](https://docs.percona.com/percona-xtradb-cluster/8.0/) .
+
+## Precautions
+
+Modifying parameter configurations will restart the Pods one by one, potentially causing a brief interruption to the business.
+
+## Operation Steps
+
+<Tabs>
+  <Tab label="Command Line Operation">
+    ```bash
+    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    spec:
+      params:
+        mysql:
+          mysqld:
+            max_connections: "1000"
+            expire_logs_days: "7"
+    '
+    ```
+
+    You can modify parameters by changing the spec.params.mysql in the CR, with the corresponding parameter keys matching the MySQL parameters. As shown above, set max\_connections to 1000 and expire\_logs\_days to 7.
+  </Tab>
+
+  <Tab label="Interface Operation">
+    #### Using Recommended Templates to Set Parameters
+
+    **Tip**: Please refer to [Parameter Templates] to create parameter templates.
+
+    - The platform provides various specifications of parameter templates for use by any MySQL-PXC instance in the cluster. Each specification of the parameter template is configured with system parameters such as `innodb_flush_log_at_trx_commit = 1` and `sync_binlog = 1`, which help improve MySQL security.
+
+    - The default parameter template applied to MySQL-PXC instances is named **hhd-1c2g-pxc-template**. When creating a MySQL-PXC instance, you can choose the corresponding parameter template based on the actual disk medium and instance specifications.
+
+    #### Updating Parameters
+
+    After updating existing parameter configurations for the instance, MySQL replicas will automatically restart in order to apply the changes.
+
+    ##### Operation Steps
+
+    1. Click on **MySQL-PXC** in the left navigation bar.
+
+    2. Click on ***namespace name***.
+
+    3. Click on ***instance name***.
+
+    4. In the **Parameter Configuration** tab, click on **Update Parameters**.
+
+    5. Configure the expected parameters, including configuring them individually or importing them in bulk.
+
+       **Note**: When importing parameters, please ensure that no unsupported parameters by MySQL are included, otherwise, the instance may fail to start.
+
+    6. Click on **Update**.
+
+    ##### Related Operations
+
+    If you need to reuse the parameter configuration of another instance, you can click on export parameters in the source instance's **Parameter Configuration** tab and refer to the parameter template to create a custom template and import parameters in bulk.
+  </Tab>
+</Tabs>
