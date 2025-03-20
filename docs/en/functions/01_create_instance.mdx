@@ -10,7 +10,7 @@ This feature is used to create and manage MySQL database instances in a Kubernet
 
 ## Prerequisites
 
-Before creating a MySQL-PXC instance, ensure that you have reviewed the [supported storage classes](链接) and confirmed that the current cluster supports that type of storage class and has sufficient available space. It is recommended to use TopoLVM storage class.
+Before creating a MySQL-PXC instance, ensure that you have reviewed the <ExternalSiteLink name="acp" href="/appservice/overview/features" children="支持的存储类" /> and confirmed that the current cluster supports that type of storage class and has sufficient available space. It is recommended to use TopoLVM storage class.
 
 ## Steps
 
@@ -282,7 +282,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the [support
 
     | Configuration Item | Description                                                                                                        |
     | -------------------| --------------------------------------------------------------------------------------------------------- |
-    | **Parameter Configuration** | - **Parameter Template**: You can choose either a system template or a custom template. If you choose a custom template, please refer to [Parameter Template](链接).                                                          |
+    | **Parameter Configuration** | - **Parameter Template**: You can choose either a system template or a custom template. If you choose a custom template, please refer to <ExternalSiteLink name="acp" href="/appservice/unified-om/para-template-mgt/intro" children="参数模板" />.      |
     | **Resource Configuration** | - **Specifications**: Refer to the performance of MySQL provided by the platform based on the data volume and configure CPU and memory accordingly.                                                           |
     | **Account Configuration** | - **Admin Password**: Please keep your password secure. To reduce the risk of password leakage, it is recommended to update the password regularly.                                                                 |
     | **Scheduling Configuration** | - **Node Labels**: Choose appropriate labels to filter available nodes in the cluster. Pods will be scheduled on available nodes.                                                              |
