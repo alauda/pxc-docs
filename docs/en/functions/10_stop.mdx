@@ -25,7 +25,7 @@ It is recommended to perform a full backup before stopping the instance to preve
     #### Stop Instance
 
     ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
     spec:
         pause: true
     '
@@ -34,7 +34,7 @@ It is recommended to perform a full backup before stopping the instance to preve
     #### Start Instance
 
     ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
     spec:
         pause: false
     '

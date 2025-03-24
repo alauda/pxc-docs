@@ -29,7 +29,7 @@ If the instance fails to start or is abnormal, meaning the instance is in a Proc
     1. Restart the instance
 
     ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
     spec:
         pxc:
           pxc:

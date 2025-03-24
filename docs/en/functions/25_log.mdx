@@ -15,13 +15,13 @@ Understand the logs during the instance runtime from the container level, such a
     1. Check all related pods of the instance, including pxc pod and proxysql pod.
 
     ```bash
-    kubectl get pod -n $namespace -l "middleware.instance/name=$name"
+    kubectl get pod -n <namespace> -l "middleware.instance/name=<name>"
     ```
 
     2. View log queries for a specific pod
 
     ```bash
-    kubectl logs -n $namespace $pod
+    kubectl logs -n <namespace> <pod>
     ```
   </Tab>
 

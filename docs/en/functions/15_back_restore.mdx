@@ -25,12 +25,12 @@ Before performing a backup, please declare storage based on the volume of data. 
     - Using PVC for storage
 
     ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
     spec:
       pxc:
         backup:
           storages:
-            $(storageName):
+            <storageName>:
               type: filesystem
               volume:
                 persistentVolumeClaim:
@@ -38,15 +38,15 @@ Before performing a backup, please declare storage based on the volume of data. 
                     - ReadWriteOnce
                   resources:
                     requests:
-                      storage: ${size}Gi
-                  storageClassName: ${storageClass}
+                      storage: <size>Gi
+                  storageClassName: <storageClass>
     ```
 
     - Using S3 for storage
       Create S3 secret
 
     ```bash
-    kubectl -n $namespace create secret generic $(backupSecretName) --from-literal=AWS_ACCESS_KEY_ID=$(accessKeyId) --from-literal=AWS_SECRET_ACCESS_KEY=$(secretAccessKey)
+    kubectl -n <namespace> create secret generic <backupSecretName> --from-literal=AWS_ACCESS_KEY_ID=$(accessKeyId) --from-literal=AWS_SECRET_ACCESS_KEY=$(secretAccessKey)
     ```
 
     Configure S3 storage
@@ -60,9 +60,9 @@ Before performing a backup, please declare storage based on the volume of data. 
             $(storageName):
               type: s3
               s3:
-                bucket: $(bucket)
-                credentialsSecret: $(backupSecretName)
-                endpointUrl: $(endpointUrl)
+                bucket: <bucket>
+                credentialsSecret: <backupSecretName>
+                endpointUrl: <endpointUrl>
     ```
 
     2. Automatic Backup
@@ -77,32 +77,32 @@ Before performing a backup, please declare storage based on the volume of data. 
           - keep: 5
             name: daily-backup
             schedule: 0 0 * * *
-            storageName: $(storageName)
+            storageName: <storageName>
     '
     ```
 
     3. Manual Backup
 
     ```bash
-    kubectl -n $namespace apply -f - <<EOF
+    kubectl -n <namespace> apply -f - <<EOF
     apiVersion: pxc.percona.com/v1
     kind: PerconaXtraDBClusterBackup
     metadata:
       labels:
-        cluster: $name
+        cluster: <name>
         trigger.type: manual
-      name: $backupName
-      namespace: $namespace
+      name: <backupName>
+      namespace: <namespace>
     spec:
-      pxcCluster: $name
-      storageName: $storageName
+      pxcCluster: <name>
+      storageName: <storageName>
     EOF
     ```
 
     4. Check Backup Status
 
     ```bash
-    kubectl get PerconaXtraDBClusterBackup -n $namespace $backupName 
+    kubectl get PerconaXtraDBClusterBackup -n <namespace> <backupName> 
     ```
 
     5. Restore Using Backup
@@ -112,12 +112,12 @@ Before performing a backup, please declare storage based on the volume of data. 
     kind: PerconaXtraDBClusterRestore
     metadata:
       labels:
-        cluster: $name
-      name: $restoreName
-      namespace: $namespace
+        cluster: <name>
+      name: <restoreName>
+      namespace: <namespace>
     spec:
-      backupName: $backupName
-      pxcCluster: $name
+      backupName: <backupName>
+      pxcCluster: <name>
     EOF
     ```
   </Tab>

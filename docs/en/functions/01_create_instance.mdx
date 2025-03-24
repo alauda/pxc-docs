@@ -19,7 +19,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
     1. Create Password
 
     ```bash
-    kubectl -n $namespace create secret generic <name>  \
+    kubectl -n <namespace> create secret generic <name>  \
         --from-literal=clustercheck=<password> \
         --from-literal=monitor=<password> \
         --from-literal=operator=<password> \
