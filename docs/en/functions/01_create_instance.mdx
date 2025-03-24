@@ -15,17 +15,17 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
 ## Steps
 
 <Tabs>
-  <Tab label="Command Line Operation">
+  <Tab label="CLI">
     1. Create Password
 
     ```bash
-    kubectl -n $namespace create secret generic $name  \
-        --from-literal=clustercheck=$password \
-        --from-literal=monitor=$password \
-        --from-literal=operator=$password \
-        --from-literal=proxyadmin=$password \
-        --from-literal=root=$password \
-        --from-literal=xtrabackup=$password 
+    kubectl -n $namespace create secret generic <name>  \
+        --from-literal=clustercheck=<password> \
+        --from-literal=monitor=<password> \
+        --from-literal=operator=<password> \
+        --from-literal=proxyadmin=<password> \
+        --from-literal=root=<password> \
+        --from-literal=xtrabackup=<password> 
     ```
 
     ::: info
@@ -39,7 +39,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
     2. Create Instance
 
     ```bash
-    kubectl -n $namespace apply -f - <<EOF
+    kubectl -n <namespace> apply -f - <<EOF
     apiVersion: middleware.alauda.io/v1
     kind: Mysql
     metadata:
@@ -48,8 +48,8 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
         middleware.upgrade.crVersion: ""
       labels:
         mysql/arch: pxc
-      name: $name
-      namespace: $namespace
+      name: <name>
+      namespace: <namespace>
     spec:
       params:
         mysql:
@@ -236,7 +236,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
                 requests:
                   storage: 5Gi
               storageClassName: sc-topolvm
-        secretsName: ${name}
+        secretsName: <name>
       runAsRoot: false
       upgradeOption:
         autoUpgrade: true
@@ -262,7 +262,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
     3. Wait for the instance creation to complete
 
     ```bash
-    kubectl get mysql -n $namespace $name -w
+    kubectl get mysql -n <namespace> <name> -w
     ```
 
     Execute the command and wait for the PXCSTATE field in the result to change to ready.
@@ -272,7 +272,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
     - After the instance is successfully created, you can access it and check the instance connection status.
   </Tab>
 
-  <Tab label="UI Operation">
+  <Tab label="Web Console">
     1. Click **MySQL-PXC** in the left navigation bar.
     2. Click on the target **namespace** name.
     3. Click **Create MySQL-PXC Instance**.

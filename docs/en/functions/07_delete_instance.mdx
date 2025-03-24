@@ -11,20 +11,20 @@ This feature is used to delete MySQL-PXC instances. Users can delete a specified
 ## Operation Steps
 
 <Tabs>
-  <Tab label="Command Line Operations">
+  <Tab label="CLI">
     1. Determine whether to retain data
 
     - Retain data and execute the command
 
     ```bash
-    kubectl patch mysql -n $namespace $name --type json -p '[{"op": "add", "path": "/metadata/finalizers/-", "value": "delete-pvc"}]'
+    kubectl patch mysql -n <namespace> <name> --type json -p '[{"op": "add", "path": "/metadata/finalizers/-", "value": "delete-pvc"}]'
     ```
 
     - Do not retain data and execute the command
 
     ```bash
-    current_finalizers=$(kubectl get mysql -n $namespace $name -o jsonpath='{.metadata.finalizers}' | jq --arg f "delete-pvc" 'map(select(. != $f))')
-    kubectl patch mysql -n $namespace $name --type merge -p "{\"metadata\":{\"finalizers\":$current_finalizers}}"
+    current_finalizers=$(kubectl get mysql -n <namespace> <name> -o jsonpath='{.metadata.finalizers}' | jq --arg f "delete-pvc" 'map(select(. != $f))')
+    kubectl patch mysql -n <namespace> <name> --type merge -p "{\"metadata\":{\"finalizers\":$current_finalizers}}"
     ```
 
     2. Delete the instance
@@ -34,7 +34,7 @@ This feature is used to delete MySQL-PXC instances. Users can delete a specified
     ```
   </Tab>
 
-  <Tab label="GUI Operations">
+  <Tab label="Web Console">
     1. Click on MySQL-PXC in the left navigation bar.
 
     2. Click on the namespace name.

@@ -19,9 +19,9 @@ Modifying parameter configurations will restart the Pods one by one, potentially
 ## Operation Steps
 
 <Tabs>
-  <Tab label="Command Line Operation">
+  <Tab label="CLI">
     ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
     spec:
       params:
         mysql:
@@ -34,7 +34,7 @@ Modifying parameter configurations will restart the Pods one by one, potentially
     You can modify parameters by changing the spec.params.mysql in the CR, with the corresponding parameter keys matching the MySQL parameters. As shown above, set max\_connections to 1000 and expire\_logs\_days to 7.
   </Tab>
 
-  <Tab label="Interface Operation">
+  <Tab label="Web Console">
     #### Using Recommended Templates to Set Parameters
 
     **Tip**: Please refer to [Parameter Templates] to create parameter templates.

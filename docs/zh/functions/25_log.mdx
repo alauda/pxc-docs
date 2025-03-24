@@ -5,7 +5,7 @@
 
 ## 操作步骤
 <Tabs>
-<Tab label="命令行操作">
+<Tab label="CLI">
 1. 查看实例所有相关 pod，包含 pxc pod 和 proxysql pod。
 ```bash
 kubectl get pod -n $namespace -l "middleware.instance/name=$name"
@@ -16,8 +16,7 @@ kubectl logs -n $namespace $pod
 ```
 </Tab>
 
-<Tab label="界面操作">
-
+<Tab label="Web Console">
 ### 界面操作
 1. 在左侧导航栏中，单击 **MySQL-PXC**。
 
