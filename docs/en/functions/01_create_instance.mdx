@@ -4,7 +4,6 @@ sourceSHA: 684e8b4e8d0e5537ae83e0b12569d18f81fd5da390c80bee261ef2d418199a38
 
 # Create Instance
 
-## Overview
 
 This feature is used to create and manage MySQL database instances in a Kubernetes cluster. Users can quickly deploy MySQL instances that meet their requirements by configuring resource specifications, parameter templates, account information, scheduling policies, and Pod toleration rules. Once the instance is created, some parameters can be adjusted dynamically; however, the scheduling configuration cannot be modified.
 
@@ -269,7 +268,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
 
     4. Access the Instance
 
-    - After the instance is successfully created, you can access it and check the instance connection status.
+    After the instance is successfully created, you can access it and check the instance connection status.
   </Tab>
 
   <Tab label="Web Console">
@@ -282,7 +281,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
 
     | Configuration Item | Description                                                                                                        |
     | -------------------| --------------------------------------------------------------------------------------------------------- |
-    | **Parameter Configuration** | - **Parameter Template**: You can choose either a system template or a custom template. If you choose a custom template, please refer to <ExternalSiteLink name="acp" href="/appservice/unified-om/para-template-mgt/intro" children="参数模板" />.      |
+    | **Parameter Configuration** | - **Parameter Template**: You can choose either a system template or a custom template.      |
     | **Resource Configuration** | - **Specifications**: Refer to the performance of MySQL provided by the platform based on the data volume and configure CPU and memory accordingly.                                                           |
     | **Account Configuration** | - **Admin Password**: Please keep your password secure. To reduce the risk of password leakage, it is recommended to update the password regularly.                                                                 |
     | **Scheduling Configuration** | - **Node Labels**: Choose appropriate labels to filter available nodes in the cluster. Pods will be scheduled on available nodes.                                                              |
@@ -296,10 +295,10 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
 
     6. Wait for instance creation
 
-    - When the instance status changes to **Running**, it indicates that the instance has been created successfully.
+    When the instance status changes to **Running**, it indicates that the instance has been created successfully.
 
     7. Access the Instance
 
-    - After the instance is successfully created, you can access it and check the instance connection status.
+    After the instance is successfully created, you can access it and check the instance connection status.
   </Tab>
 </Tabs>

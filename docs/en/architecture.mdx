@@ -1,0 +1,21 @@
+---
+weight: 40
+sourceSHA: d95b55c82b2612d70d0cf9b89658a9ca0207e1f397b0d1d4a09c9a67792fbae5
+---
+
+Percona XtraDB Cluster (PXC) is an open-source solution designed to provide high availability and scalability for MySQL databases. It integrates Percona Server with the Galera library, enabling synchronous multi-master replication to ensure data consistency across all nodes.
+
+## Features of Percona XtraDB Cluster
+
+| Feature                          | Details |
+|----------------------------------|---------|
+| **Synchronous replication**      | Data is written to all nodes simultaneously, or not written at all in case of a failure even on a single node. |
+| **Multi-source replication**     | Any node can trigger a data update. |
+| **True parallel replication**    | Multiple threads on replica performing replication on row level. |
+| **Automatic node provisioning**  | You simply add a node and it automatically syncs. |
+| **Data consistency**             | No more unsynchronized nodes. |
+| **PXC Strict Mode**              | Avoids the use of tech preview features and unsupported features. |
+| **Optimized Performance**        | Percona XtraDB Cluster performance is optimized to scale with a growing production workload. |
+
+
+![pxc arch](./assets/pxc_arch.svg)
