@@ -1,5 +1,6 @@
 ---
 weight: 10
+sourceSHA: 336dbf503b67826068d13e754502fb40ceb82d4ca5273ba98e18e3c03a25e236
 ---
 
 # 介绍
@@ -7,7 +8,6 @@ weight: 10
 Alauda Database for MySQL-PXC 使用同步复制的方式运行在 Kubernetes 上，基于 Percona XtraDB Cluster，它是 MySQL 的开源发行版本。Alauda Database for MySQL-PXC 提供了自动化部署与管理 Percona XtraDB Cluster 中对象的能力，也可以用来启动新的 Percona XtraDB Cluster 实例或扩展现有环境。通过 Alauda Database for MySQL-PXC，您可以轻松地部署和管理高可用的 MySQL 集群。
 
 ## 核心优势
-
 
 - **自动化管理**：通过 Percona Operator 自动化管理 MySQL 集群，简化了运维工作。
 - **高可用性**：基于 Percona XtraDB Cluster 提供同步复制和高可用性，确保业务的持续运行。
@@ -26,5 +26,5 @@ Alauda Database for MySQL-PXC 使用同步复制的方式运行在 Kubernetes �
 ## 使用限制
 
 - **支持版本**：目前仅支持 MySQL 5.7 版本。
-- **最小副本要求**：建议至少配置三副本以确保高可用性。
+- **最小副本要求**：建议至少配置三个副本以确保高可用性。
 - **硬件要求**：部署时需确保节点具备足够的资源，以支持数据库的高性能运行。

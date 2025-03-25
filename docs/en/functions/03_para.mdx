@@ -4,7 +4,6 @@ sourceSHA: 9601732b56782bb65a449fb8321f07c8d039d9eb77eb3ae92dab2274ed259dc3
 
 # Parameter Configuration
 
-## Function Overview
 
 Configuring appropriate MySQL parameters based on business scenarios can help the database achieve optimal performance and better support business operations. By default, MySQL-PXC instances use system parameters provided by MySQL and Percona. You can also conveniently configure these parameters through the interface.
 
@@ -19,9 +18,9 @@ Modifying parameter configurations will restart the Pods one by one, potentially
 ## Operation Steps
 
 <Tabs>
-  <Tab label="Command Line Operation">
+  <Tab label="CLI">
     ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
     spec:
       params:
         mysql:
@@ -34,7 +33,7 @@ Modifying parameter configurations will restart the Pods one by one, potentially
     You can modify parameters by changing the spec.params.mysql in the CR, with the corresponding parameter keys matching the MySQL parameters. As shown above, set max\_connections to 1000 and expire\_logs\_days to 7.
   </Tab>
 
-  <Tab label="Interface Operation">
+  <Tab label="Web Console">
     #### Using Recommended Templates to Set Parameters
 
     **Tip**: Please refer to [Parameter Templates] to create parameter templates.
