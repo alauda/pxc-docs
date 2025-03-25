@@ -4,7 +4,6 @@ sourceSHA: e1720ef70de5acc3433ec1bbccb7317d8c348e9934bcf6405aa845eff8430a4a
 
 # Restart Instance
 
-## Function Overview
 
 If an instance encounters operational faults, excessive connection counts, or other unknown issues that cannot be identified during its operation, problems can be resolved by restarting the instance.
 
@@ -25,11 +24,11 @@ If the instance fails to start or is abnormal, meaning the instance is in a Proc
 ## Operational Steps
 
 <Tabs>
-  <Tab label="Command Line Operation">
+  <Tab label="CLI">
     1. Restart the instance
 
     ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
+    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
     spec:
         pxc:
           pxc:
@@ -42,7 +41,7 @@ If the instance fails to start or is abnormal, meaning the instance is in a Proc
     ```
   </Tab>
 
-  <Tab label="UI Operation">
+  <Tab label="Web Console">
     1. Click on **MySQL-PXC** in the left navigation bar.
 
     2. Click on ***Namespace Name***.

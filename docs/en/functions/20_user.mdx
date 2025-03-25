@@ -4,8 +4,6 @@ sourceSHA: dd08cf381152319c783d0efcaa484b7dd6e542d0938fa57bcd16808c539775f9
 
 # User Management
 
-## Function Overview
-
 This feature provides a graphical user management function. It is recommended that you assign database users correspondingly to database developers based on usage needs.
 
 ## Prerequisites
@@ -17,7 +15,7 @@ Ensure that the instance is in **Running** status.
 Create a user and configure permissions for that user. The platform will simultaneously generate user authentication credentials for Kubernetes resources - **Secret Dictionary**. For applications using MySQL, MySQL username and password can be referenced in Pods through the Secret Dictionary. The Secret Dictionary will automatically synchronize user information; do not modify the configurations within it.
 
 <Tabs>
-  <Tab label="Interface Operation">
+  <Tab label="Web Console">
     #### Create User
 
     1. Click **MySQL-PXC** in the left navigation bar.

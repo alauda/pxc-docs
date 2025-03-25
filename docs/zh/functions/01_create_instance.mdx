@@ -1,41 +1,43 @@
+---
+sourceSHA: aafd48b266d481be03bb4349df2aa03f033167974deafce50ff407c221e32ae8
+---
+
 # 创建实例
 
 ## 功能简介
 
-本功能用于在 Kubernetes 集群中创建和管理 MySQL 数据库实例。用户可以通过配置资源规格、参数模板、账户信息、调度策略以及 Pod 容忍规则，快速部署符合需求的 MySQL 实例。实例创建后，支持部分参数的动态调整，但调度配置不可修改。
-
+本功能用于在 Kubernetes 集群中创建和管理 MySQL 数据库实例。用户可以通过配置资源规格、参数模板、账户信息、调度策略以及 Pods 容忍规则，快速部署符合需求的 MySQL 实例。实例创建后，支持部分参数的动态调整，但调度配置不可修改。
 
 ## 前提条件
 
-在创建 MySQL-PXC 实例之前，确保您已经查看过<ExternalSiteLink name="acp" href="/appservice/overview/features.html#compatible_sc" children="支持的存储类" />，并确认当前集群支持该类型的存储类且有足够的可用空间。建议使用 TopoLVM 存储类。
+在创建 MySQL-PXC 实例之前，确保您已经查看过<ExternalSiteLink name="acp" href="/appservice/overview/features.html#compatible_sc" children="兼容的存储类" />，并确认当前集群支持该类型的存储类且有足够的可用空间。建议使用 TopoLVM 存储类。
 
 ## 操作步骤
 
 <Tabs>
-<Tab label="命令行操作">
+<Tab label="CLI">
 1. 创建密码
 ```bash
-kubectl -n $namespace create secret generic $name  \
-    --from-literal=clustercheck=$password \
-    --from-literal=monitor=$password \
-    --from-literal=operator=$password \
-    --from-literal=proxyadmin=$password \
-    --from-literal=root=$password \
-    --from-literal=xtrabackup=$password 
+kubectl -n <namespace> create secret generic <name>  \
+    --from-literal=clustercheck=<password> \
+    --from-literal=monitor=<password> \
+    --from-literal=operator=<password> \
+    --from-literal=proxyadmin=<password> \
+    --from-literal=root=<password> \
+    --from-literal=xtrabackup=<password> 
 ```
 
 ::: info
 
-- `<name>` 是密码名称，用于标识实例，不可重复，推荐与实例使用相同名称。设置在实例的 spec.pxc.secretsName 字段中
-- `<namespace>` 是实例所属的命名空间
-- `<password>` 是密码，上面多个用户可以分别设置不同的密码
+- `<name>` 是密码名称，用于标识实例，不可重复，推荐与实例使用相同名称。设置在实例的 spec.pxc.secretsName 字段中。
+- `<namespace>` 是实例所属的命名空间。
+- `<password>` 是密码，上述多个用户可以分别设置不同的密码。
 
-::: 
-
+:::
 
 2. 创建实例
 ```bash
-kubectl -n $namespace apply -f - <<EOF
+kubectl -n <namespace> apply -f - <<EOF
 apiVersion: middleware.alauda.io/v1
 kind: Mysql
 metadata:
@@ -44,8 +46,8 @@ metadata:
     middleware.upgrade.crVersion: ""
   labels:
     mysql/arch: pxc
-  name: $name
-  namespace: $namespace
+  name: <name>
+  namespace: <namespace>
 spec:
   params:
     mysql:
@@ -232,7 +234,7 @@ spec:
             requests:
               storage: 5Gi
           storageClassName: sc-topolvm
-    secretsName: ${name}
+    secretsName: <name>
   runAsRoot: false
   upgradeOption:
     autoUpgrade: true
@@ -242,24 +244,24 @@ EOF
 
 ::: info
 
-- `<name>` 是实例名称，用于标识实例，不可重复
-- `<namespace>` 是实例所属的命名空间
-- `<spec.pxc.secretsName>` 是密码名称,在步骤一种创建
-- `<spec.params.mysql>` 是 MySQL 参数配置，配置项同 Mysql 5.7
-- `<spec.pxc.pxc.resources>` 是 PXC Pod 的资源配置，配置同 Pod 资源配置
-- `<spec.pxc.pxc.volumeSpec.persistentVolumeClaim>` 是 PXC Pod 的数据卷配置
-- `<spec.pxc.pxc.size>` 是 PXC Pod 数量
-- `<spec.pxc.proxysql.resources>` 是 ProxySQL Pod 的资源配置，配置同 Pod 资源配置
-- `<spec.pxc.proxysql.volumeSpec.persistentVolumeClaim>` 是 ProxySQL Pod 的数据卷配置
-- `<spec.pxc.proxysql.size>` 是 ProxySQL Pod 数量
+- `<name>` 是实例名称，用于标识实例，不可重复。
+- `<namespace>` 是实例所属的命名空间。
+- `<spec.pxc.secretsName>` 是步骤 1 中创建的密码名称。
+- `<spec.params.mysql>` 是 MySQL 参数配置，配置项同 MySQL 5.7。
+- `<spec.pxc.pxc.resources>` 是 PXC Pods 的资源配置，配置同 Pods 资源配置。
+- `<spec.pxc.pxc.volumeSpec.persistentVolumeClaim>` 是 PXC Pods 的数据卷配置。
+- `<spec.pxc.pxc.size>` 是 PXC Pods 数量。
+- `<spec.pxc.proxysql.resources>` 是 ProxySQL Pods 的资源配置，配置同 Pods 资源配置。
+- `<spec.pxc.proxysql.volumeSpec.persistentVolumeClaim>` 是 ProxySQL Pods 的数据卷配置。
+- `<spec.pxc.proxysql.size>` 是 ProxySQL Pods 数量。
 
-::: 
+:::
 
 3. 等待实例创建完成
 ```bash
-kubectl get mysql -n $namespace $name -w
+kubectl get mysql -n <namespace> <name> -w
 ```
-执行命令，等待结果中的 PXCSTATE 字段变为 ready
+执行命令，等待结果中的 PXCSTATE 字段变为 ready。
 
 4. 访问实例
 
@@ -267,8 +269,7 @@ kubectl get mysql -n $namespace $name -w
 
 </Tab>
 
-
-<Tab label="界面操作">
+<Tab label="Web Console">
 
 1. 在左侧导航栏中，单击 **MySQL-PXC**。
 2. 单击目标 **命名空间** 的名称。
@@ -282,11 +283,11 @@ kubectl get mysql -n $namespace $name -w
 | **参数配置** | - **参数模板**：可选择系统模板或自定义模板。若选择自定义模板，请参考<ExternalSiteLink name="acp" href="/appservice/unified-om/para-template-mgt/intro" children="参数模板" />。 |
 | **资源配置** | - **规格**：根据数据量级参考平台提供的 MySQL 性能表现，合理配置 CPU 和内存。 |
 | **账户配置** | - **管理员密码**：请妥善保存您的密码，为降低密码泄漏风险，建议定期更新密码。 |
-| **调度配置** | - **节点标签**：选择合适的标签以筛选集群中的可用节点。Pod 将被调度到可用节点。 |
+| **调度配置** | - **节点标签**：选择合适的标签以筛选集群中的可用节点。Pods 将被调度到可用节点。 |
 |             | 注意：实例创建后，该配置将不可修改。 |
-| **Pod 容忍** | - 如果节点设置了污点，只有设置了 Pod 容忍的实例才能被调度到该节点。匹配规则如下： |
-|             | - **Equal**：Pod 容忍的 key、value、effect 必须与节点污点完全一致。 |
-|             | - **Exists**：Pod 容忍的 key、effect 必须与节点污点的设值一致。 |
+| **Pods 容忍** | - 如果节点设置了污点，只有设置了 Pods 容忍的实例才能被调度到该节点。匹配规则如下： |
+|             | - **Equal**：Pods 容忍的 key、value、effect 必须与节点污点完全一致。 |
+|             | - **Exists**：Pods 容忍的 key、effect 必须与节点污点的设值一致。 |
 |             | 更多信息，请参见[Kubernetes 官方文档](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。 |
 
 5. 单击 **创建**。

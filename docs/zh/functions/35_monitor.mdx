@@ -1,3 +1,7 @@
+---
+sourceSHA: e39ef12a19fcf386512c274f5d627a22b8ba4146c2f2d4031e0c21845841aeb8
+---
+
 # 监控
 
 ## 功能简介
@@ -9,25 +13,18 @@
 
 平台默认收集 MySQL 的资源、性能及容量相关常用监控指标。在实例的 **监控** 页签中，可查看指标的实时监控数据。
 
-
-| 指标 | 默认监控指标                                                         |
-| -------- | ------------------------------------------------------------ |
-| Pod CPU Utilization | Pod's CPU usage. Pods with a CPU usage exceeding 100% will be ignored, because under normal circumstances the CPU usage will not exceed 100%. If it exceeds 100%, please check whether all containers of pod have set resource limits. |
-| Pod Memory Utilization | Pod's memory usage. Pods with a memory usage exceeding 100% will be ignored, because under normal circumstances memory usage will not exceed 100%. If it exceeds 100%, please check whether all containers of pod have set resource limits. |
-| Netwrok Received | The average bytes per second received from network in the past 5 minutes |
-| Netwrok Transmitted | The average bytes per second sent onto network in the last 5 minutes |
-| PVC Used | PVC storage usage. |
-| MySQL Connections | Max Connections is the maximum permitted number of simultaneous client connections. By default, this is 151. Increasing this value increases the number of file descriptors that mysqld requires. |
-| MySQL Client Thread Activity | Threads Connected is the number of open connections, while Threads Running is the number of threads not sleeping. |
-| MySQL Table Locks | MySQL takes a number of different locks for varying reasons. In this graph we see how many Table level locks MySQL has requested from the storage engine. |
-| MySQL Sorts | This graph also shows when sorts had to scan a whole table or a given range of a table in order to return the results and which could not have been sorted via an index |
-| MySQL Slow Queries | Slow queries are defined as queries being slower than the long_query_time setting. |
-| InnoDB Buffer Pool Requests | InnoDB Buffer Pool Requests refers to the total number of read and write requests made to the InnoDB buffer pool. |
-| TPS | Transactions Per Second (TPS) is a key performance metric that measures the number of transactions MySQL processes per second. |
-| Commands | Commands refers to the number of SQL statements executed by MySQL, including queries, inserts, updates, deletes, and other database operations. |
-
-
-
-
-
-
+| 指标                       | 默认监控指标                                                                                                                                                                                                                        |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pod CPU 利用率               | Pod 的 CPU 使用率。CPU 使用率超过 100% 的 Pod 将被忽略，因为在正常情况下，CPU 使用率不会超过 100%。如果超过 100%，请检查 Pod 中是否所有容器都设置了资源限制。                                                                  |
+| Pod 内存利用率              | Pod 的内存使用率。内存使用率超过 100% 的 Pod 将被忽略，因为在正常情况下，内存使用率不会超过 100%。如果超过 100%，请检查 Pod 中是否所有容器都设置了资源限制。                                                                   |
+| 网络接收                   | 在过去 5 分钟内从网络接收到的平均字节数                                                                                                                                                                                               |
+| 网络发送                   | 在过去 5 分钟内发送到网络的平均字节数                                                                                                                                                                                                  |
+| PVC 使用                    | PVC 存储使用情况。                                                                                                                                                                                                                       |
+| MySQL 连接数                | 最大连接数是允许的同时客户端连接的最大数量。默认值为 151。增加此值会增加 mysqld 所需的文件描述符数量。                                                                                                                     |
+| MySQL 客户端线程活动       | 连接线程是指开放连接的数量，而运行线程是指非休眠线程的数量。                                                                                                                                                                           |
+| MySQL 表锁                  | MySQL 由于不同原因会采取多种锁。在此图中，我们可以看到 MySQL 从存储引擎请求了多少表级别的锁。                                                                                                                                                     |
+| MySQL 排序                  | 此图还显示了排序时必须扫描整个表或表的某个范围，以返回无法通过索引进行排序的结果。                                                                                                                                                   |
+| MySQL 慢查询                | 慢查询被定义为执行时间超过 long_query_time 设置的查询。                                                                                                                                                                              |
+| InnoDB 缓冲池请求          | InnoDB 缓冲池请求是指对 InnoDB 缓冲池发出的读写请求总数。                                                                                                                                                                             |
+| TPS                          | 每秒事务数（TPS）是一个关键性能指标，度量 MySQL 每秒处理的事务数量。                                                                                                                                                                 |
+| 命令                        | 命令指的是 MySQL 执行的 SQL 语句的数量，包括查询、插入、更新、删除以及其他数据库操作。                                                                                                                                                    |
