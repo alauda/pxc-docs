@@ -1,0 +1,76 @@
+---
+weight: 50
+---
+
+# Scheduling Configuration
+
+The scheduling policy allows instances to run on specified nodes and effectively prevents other applications from being scheduled to those nodes, ensuring high availability of the instances.
+
+## Scenario Overview
+
+* PXC is deployed in a dedicated business cluster, and customers want different PXC instances to run on different nodes for easier maintenance and faster fault localization.
+
+* PXC is deployed within an existing business cluster, and customers want to deploy PXC instances on specified nodes while preventing other applications from being scheduled to the same nodes.
+
+Both scenarios can be implemented by configuring **Node Labels** and **Pod Tolerations** in the **Scheduling Configuration** section on the instance creation page.
+
+This section demonstrates how to run PXC instances on different specified nodes. The designated nodes are as follows:
+
+| Component  | Specified Nodes |
+| ---  | --- |
+| **Redis**  | 192.168.100.101 192.168.100.102 |
+| **MySQL-PXC**  | 192.168.100.103 192.168.100.104 192.168.100.105 |
+
+## Prerequisites
+
+1. The platform administrator must **update node labels** on the specified nodes so that middleware can be scheduled to the designated nodes based on the labels.
+
+2. The platform administrator must **set taints** on the specified nodes to ensure middleware can be scheduled to the tainted nodes based on tolerations while preventing other applications from being scheduled to those nodes.
+
+You can configure nodes and taints based on actual requirements.
+
+The platform administrator has already set node taints and labels in the platform center with the following configurations:
+
+| Node  | Node Label  | Node Taint |
+| ---  | ---  | --- |
+| **192.168.100.101 192.168.100.102**  | keyredis=valueredis  | keyredis=valueredis:NoSchedule |
+| **192.168.100.103 192.168.100.104 192.168.100.105**  | keymysql=valuemysql  | keymysql=valuemysql:NoSchedule |
+
+## Configuration Explanation
+
+* **Taint**: A key-value attribute on a node that prevents Pods from being scheduled on it unless the Pod has a corresponding toleration.
+
+* **Toleration**: A key-value attribute on a Pod that allows it to tolerate specific node taints, ensuring the Pod is scheduled only to nodes it can tolerate.
+
+Taints and tolerations support the `effect` parameter, with the syntax format `key=value:effect`. The `effect` defines the exclusion level for the Pod and includes three types:
+
+| Effect Type  | Description |
+| ---  | --- |
+| **NoSchedule**  | New Pods that do not tolerate this taint cannot be scheduled on the node. This is a strict constraint, but existing Pods on the node remain unaffected. |
+| **PreferNoSchedule**  | A softer version of NoSchedule, where new Pods that do not tolerate this taint should preferably not be scheduled on the node, but they may still be scheduled there if no other nodes are available. Existing Pods remain unaffected. |
+| **NoExecute**  | New Pods that do not tolerate this taint cannot be scheduled on the node. Additionally, if an existing Pod no longer meets the taint-toleration criteria due to changes in the node taint or the Pod’s tolerations, it will be evicted. |
+
+When defining tolerations on a Pod, two operators are supported:
+
+| Operator  | Description |
+| ---  | --- |
+| **Equal**  | The Pod's toleration must exactly match the node taint’s key, value, and effect. |
+| **Exists**  | The Pod’s toleration must match the node taint’s key and effect, but the value field can be empty. |
+
+## Configuration Steps
+
+### Create a MySQL Instance with Scheduling Configuration
+
+1. In the left navigation panel, click **MySQL-PXC**.
+
+2. Click **Create MySQL-PXC Instance**.
+
+3. Complete the parameter configuration. In the **Scheduling Configuration** section, select the node label and taint based on the specified nodes.
+
+    ![MySQL Scheduling Configuration](../assets/44schedule.png)
+
+4. Click **Create**. The MySQL instance Pod will be scheduled to nodes 192.168.100.103, 192.168.100.104, and 192.168.100.105.
+
+## Verification
+
+You can verify that the MySQL instances are running on the specified nodes by navigating to **Container Platform** > **Compute Components** > **Container Groups**.
