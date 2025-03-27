@@ -1,23 +1,46 @@
 ---
-weight: 40
+weight: 41
 sourceSHA: d95b55c82b2612d70d0cf9b89658a9ca0207e1f397b0d1d4a09c9a67792fbae5
 ---
 
 # Architecture
 
-Percona XtraDB Cluster (PXC) is an open-source solution designed to provide high availability and scalability for MySQL databases. It integrates Percona Server with the Galera library, enabling synchronous multi-master replication to ensure data consistency across all nodes.
+*Percona XtraDB Cluster* integrates *Percona Server for MySQL* running
+    with the XtraDB storage engine, and *Percona XtraBackup* with the
+*Galera library* to enable synchronous multi-primary replication.
 
-## Features of Percona XtraDB Cluster
+The design of the Operator is highly bound to the
+Percona XtraDB Cluster high availability implementation, which in its turn can
+be briefly described with the following diagram.
 
-| Feature                          | Details |
-|----------------------------------|---------|
-| **Synchronous replication**      | Data is written to all nodes simultaneously, or not written at all in case of a failure even on a single node. |
-| **Multi-source replication**     | Any node can trigger a data update. |
-| **True parallel replication**    | Multiple threads on replica performing replication on row level. |
-| **Automatic node provisioning**  | You simply add a node and it automatically syncs. |
-| **Data consistency**             | No more unsynchronized nodes. |
-| **PXC Strict Mode**              | Avoids the use of tech preview features and unsupported features. |
-| **Optimized Performance**        | Percona XtraDB Cluster performance is optimized to scale with a growing production workload. |
+![image](./assets/replication.svg)
+
+Being a regular MySQL Server instance, each node contains the same set
+of data synchronized accross nodes. The recommended configuration is to
+have at least 3 nodes. In a basic setup with this amount of nodes,
+Percona XtraDB Cluster provides high availability, continuing to
+function if you take any of the nodes down. Additionally load balancing
+can be achieved with the HAProxy router, which accepts incoming traffic
+from MySQL clients and forwards it to backend MySQL servers.
 
 
-![pxc arch](./assets/pxc_arch.svg)
+To provide high availability operator uses [node affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
+to run Percona XtraDB Cluster instances on separate worker nodes if possible. If
+some node fails, the pod with it is automatically re-created on another node.
+
+![image](./assets/operator.svg)
+
+To provide data storage for stateful applications, Kubernetes uses
+Persistent Volumes. A *PersistentVolumeClaim* (PVC) is used to implement
+the automatic storage provisioning to pods. If a failure occurs, the
+Container Storage Interface (CSI) should be able to re-mount storage on
+a different node. The PVC StorageClass must support this feature.
+
+The Operator functionality extends the Kubernetes API with
+*PerconaXtraDBCluster* object, and it is implemented as a golang
+application. Each *PerconaXtraDBCluster* object maps to one separate Percona
+XtraDB Cluster setup. The Operator listens to all events on the created objects.
+When a new PerconaXtraDBCluster object is created, or an existing one undergoes
+some changes or deletion, the operator automatically
+creates/changes/deletes all needed Kubernetes objects with the
+appropriate settings to provide a proper Percona XtraDB Cluster operation.

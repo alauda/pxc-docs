@@ -7,9 +7,7 @@ weight: 13
 
 If an instance encounters operational faults, excessive connection counts, or other unknown issues that cannot be identified during its operation, problems can be resolved by restarting the instance.
 
-## Precautions
 
-During the restart process, Pods will be restarted one by one, which may cause a temporary interruption of services.
 
 ## Prerequisites
 
@@ -17,11 +15,13 @@ The instance must be in a Running state.
 
 **Note:**
 
+During the restart process, Pods will be restarted one by one, which may cause a temporary interruption of services.
+
 If the instance is in a Processing state, it indicates that the instance might be starting normally; please be patient.
 
 If the instance fails to start or is abnormal, meaning the instance is in a Processing or Error state, it will automatically restart after the health check times out; please be patient.
 
-## Operational Steps
+## Procedure
 
 <Tabs>
   <Tab label="CLI">

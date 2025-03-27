@@ -5,13 +5,13 @@ weight: 01
 # Create Instance
 
 
-This feature is used to create and manage MySQL database instances in a Kubernetes cluster. Users can quickly deploy MySQL instances that meet their requirements by configuring resource specifications, parameter templates, account information, scheduling policies, and Pod toleration rules. Once the instance is created, some parameters can be adjusted dynamically; however, the scheduling configuration cannot be modified.
+Alauda Database Service for MySQL-PXC provides a set of functions to create and manage MySQL database instances in a Kubernetes cluster. Users can quickly deploy MySQL instances that meet their requirements by configuring resource specifications, parameter templates, account information, scheduling policies, and Pod toleration rules. Once the instance is created, some parameters can be adjusted dynamically; however, the scheduling configuration cannot be modified.
 
 ## Prerequisites
 
 Before creating a MySQL-PXC instance, ensure that you have reviewed the <ExternalSiteLink name="acp" href="/appservice/overview/features.html#compatible_sc" children="Compatible Storage Classes" /> and confirmed that the current cluster supports that type of storage class and has sufficient available space. It is recommended to use TopoLVM storage class.
 
-## Steps
+## Procedure
 
 <Tabs>
   <Tab label="CLI">
@@ -218,8 +218,10 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
           size: 3
           volumeSpec:
             persistentVolumeClaim:
-              resources: {}
-              storageClassName: sc-topolvm
+              resources:
+                requests:
+                  storage: <size>Gi
+              storageClassName: <storageClassName>
         pxc:
           resources:
             limits:
@@ -233,8 +235,8 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
             persistentVolumeClaim:
               resources:
                 requests:
-                  storage: 5Gi
-              storageClassName: sc-topolvm
+                  storage: <size>Gi
+              storageClassName: <storageClassName>
         secretsName: <name>
       runAsRoot: false
       upgradeOption:
@@ -264,7 +266,7 @@ Before creating a MySQL-PXC instance, ensure that you have reviewed the <Externa
     kubectl get mysql -n <namespace> <name> -w
     ```
 
-    Execute the command and wait for the PXCSTATE field in the result to change to ready.
+    Execute the command and wait for the STATE field in the result to change to ready.
 
     4. Access the Instance
 

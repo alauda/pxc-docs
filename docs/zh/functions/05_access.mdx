@@ -1,108 +1,119 @@
 ---
-sourceSHA: 3ed243d0c2d8dbbf950e610d10a47d5a138698a38f4454de3274aefbf5786215
+sourceSHA: fa82b3219026d008977f456db4b58e3365ebc9cedcc3b42460819930040828db
+weight: 5
 ---
 
 # 访问方式
 
-## 功能简介
-本功能用于连接在 Kubernetes 中的 MySQL 集群数据库，支持 NodePort、LoadBalancer 和服务 DNS 等多种访问方式。
+Alauda Database Service for MySQL-PXC 提供了多种方式供客户端应用程序在不同场景下访问数据库。无论哪种方式，集群都通过常规的 Kubernetes 服务对象进行暴露，由 Operator 配置。
 
 ## 操作步骤
+
 <Tabs>
-<Tab label="CLI">
-1. 集群内使用服务 DNS 方式访问实例
-```bash
-mysql -u$username -p$password -h$name.$namespace
-```
+  <Tab label="CLI">
+    1. 集群内使用服务 DNS 访问实例
 
-2. 集群外使用 NodePort 方式访问实例
-* 开启 NodePort 
-```bash
-kubectl patch mysql -n $namespace $name --type merge -p '
-spec:
-  pxc:
-    proxysql:
-      serviceType: NodePort
-'
-```
-* 查看 NodePort
-```bash
-kubectl get svc -n $namespace $name-proxysql -o jsonpath='{.spec.ports[0].nodePort}'
-```
-* 使用 NodePort 访问实例
-```bash
-mysql -u$username -p$password -h$nodeip -P$nodeport
-```
-
-3. 集群外使用 LoadBalancer 方式访问实例
-* 开启 LoadBalancer 
-```bash
-kubectl patch mysql -n $namespace $name --type merge -p '
-spec:
-  pxc:
-    proxysql:
-      serviceType: LoadBalancer
-'
-```
-</Tab>
-<Tab label="Web Console">
-#### 获取帐号信息
-
-1. 在左侧导航栏中，单击 **MySQL-PXC**。
-
-2. 展开集群，单击命名空间。
-
-3. 单击 ***实例名称*** 。
-
-4. 在 **用户管理** 页签中，获取用户名和密码。
-
-#### 获取连接信息
-    
-##### 用于集群内
-
-实例创建完毕后，可在实例的 **访问方式** 页签中查询用于 **集群内** 访问的信息。
-
-| 参数               | 说明                                                         |
-| ------------------ | ------------------------------------------------------------ |
-| **内部路由地址**       | 从集群内访问实例的统一入口，包括内部路由的名称、IP 地址和端口号。**说明**：内部路由名称需转换为 [DNS 名称](https://kubernetes.io/zh/docs/concepts/services-networking/dns-pod-service/#pod-dns-config)，即 `{内部路由名称}.{命名空间名称}.svc.cluster.local` 以访问实例。|
-| **MySQL 节点访问地址** | 由实例中 PXC 节点的名称和端口号组成。|
-
-##### 用于集群外
-
-需要先在实例的 **访问方式** 页签中为负载均衡器添加 TCP 侦听端口，以接收 **集群外** 客户端的连接请求。
-
-##### 操作步骤
-
-1. 在 **集群外访问** 区域，单击 **添加监听端口**。
-    
-2. 选择负载均衡器。
-    
-3. 参考以下说明，配置相关参数。
-    
-    | 参数       | 说明                                                         |
-    | ---------- | ------------------------------------------------------------ |
-    | **内部路由组** | 访问流量将默认分发至内部路由的端口中。|
-    | **会话保持**   | 若根据 **源地址哈希** 进行会话保持，源自同一 IP 地址的访问请求将始终被转发至对应的后端服务。 |
-    
-4. 单击 **添加**。 
-
-5. 访问实例
-建议您使用 [标准 MySQL 客户端](https://downloads.mysql.com/archives/shell/) 访问 MySQL-PXC 实例。
-
-* 从集群内访问：在实例详细信息页，单击右上角 **终端控制台**，连接 MySQL 各节点。如果连接的是本实例中的节点，可省略 `-h` 参数。
-
-    ```
-    mysql -h{内部路由名称}.{命名空间名称}.svc.cluster.local -u{用户名} -p{密码}
-    
-    或者
-    
-    mysql -h{内部路由 IP 地址} -u{用户名} -p{密码}
+    ```bash
+    mysql -u$username -p$password -h$name.$namespace
     ```
 
-* 从集群外访问
+    2. 集群外使用 NodePort 访问实例
 
+    - 开启 NodePort
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type merge -p '
+    spec:
+      pxc:
+        proxysql:
+          serviceType: NodePort
+    '
     ```
-    mysql -h{负载均衡器 IP} -P{侦听端口} -u{用户名} -p{密码}
+
+    - 查看 NodePort
+
+    ```bash
+    kubectl get svc -n $namespace $name-proxysql -o jsonpath='{.spec.ports[0].nodePort}'
     ```
-</Tab>
+
+    - 使用 NodePort 访问实例
+
+    ```bash
+    mysql -u$username -p$password -h$nodeip -P$nodeport
+    ```
+
+    3. 集群外使用 LoadBalancer 访问实例
+
+    - 开启 LoadBalancer
+
+    ```bash
+    kubectl patch mysql -n $namespace $name --type merge -p '
+    spec:
+      pxc:
+        proxysql:
+          serviceType: LoadBalancer
+    '
+    ```
+  </Tab>
+
+  <Tab label="Web Console">
+    #### 获取帐号信息
+
+    1. 在左侧导航栏中，单击 **MySQL-PXC**。
+
+    2. 展开集群，单击命名空间。
+
+    3. 单击 ***实例名称***。
+
+    4. 在 **用户管理** 页签中，获取用户名和密码。
+
+    #### 获取连接信息
+
+    ##### 用于集群内访问
+
+    实例创建完毕后，可在实例的 **访问方式** 页签中查询用于 **集群内** 访问的信息。
+
+    | 参数               | 说明                                                         |
+    | ------------------ | ------------------------------------------------------------ |
+    | **内部路由地址**       | 从集群内访问实例的统一入口，包括内部路由的名称、IP 地址和端口号。**说明**：内部路由名称需转换为 [DNS 名称](https://kubernetes.io/zh/docs/concepts/services-networking/dns-pod-service/#pod-dns-config)，即 `{内部路由名称}.{命名空间名称}.svc.cluster.local` 以访问实例。|
+    | **MySQL 节点访问地址** | 由实例中 PXC 节点的名称和端口号组成。|
+
+    ##### 用于集群外访问
+
+    需要先在实例的 **访问方式** 页签中为负载均衡器添加 TCP 侦听端口，以接收 **集群外** 客户端的连接请求。
+
+    ##### 操作步骤
+
+    1. 在 **集群外访问** 区域，单击 **添加监听端口**。
+
+    2. 选择负载均衡器。
+
+    3. 参考以下说明，配置相关参数。
+
+       | 参数       | 说明                                                         |
+       | ---------- | ------------------------------------------------------------ |
+       | **内部路由组** | 访问流量将默认分发至内部路由的端口中。|
+       | **会话保持**   | 若根据 **源地址哈希** 进行会话保持，源自同一 IP 地址的访问请求将始终被转发至对应的后端服务。 |
+
+    4. 单击 **添加**。
+
+    5. 访问实例
+       建议您使用 [标准 MySQL 客户端](https://downloads.mysql.com/archives/shell/) 访问 MySQL-PXC 实例。
+
+    - 从集群内访问：在实例详细信息页，单击右上角 **终端控制台**，连接 MySQL 各节点。如果连接的是本实例中的节点，可省略 `-h` 参数。
+
+      ```
+      mysql -h{内部路由名称}.{命名空间名称}.svc.cluster.local -u{用户名} -p{密码}
+
+      或者
+
+      mysql -h{内部路由 IP 地址} -u{用户名} -p{密码}
+      ```
+
+    - 从集群外访问
+
+      ```
+      mysql -h{负载均衡器 IP} -P{侦听端口} -u{用户名} -p{密码}
+      ```
+  </Tab>
 </Tabs>

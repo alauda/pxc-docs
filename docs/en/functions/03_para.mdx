@@ -11,11 +11,11 @@ The platform provides parameter templates to define a series of MySQL parameters
 
 For more parameter information, please refer to the [MySQL Official Website](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html) and [Percona Official Website](https://docs.percona.com/percona-xtradb-cluster/8.0/) .
 
-## Precautions
+## Note
 
 Modifying parameter configurations will restart the Pods one by one, potentially causing a brief interruption to the business.
 
-## Operation Steps
+## Procedure
 
 <Tabs>
   <Tab label="CLI">
@@ -36,7 +36,7 @@ Modifying parameter configurations will restart the Pods one by one, potentially
   <Tab label="Web Console">
     #### Using Recommended Templates to Set Parameters
 
-    **Tip**: Please refer to [Parameter Templates] to create parameter templates.
+    **Tip**: Please refer to **Parameter Templates** to create parameter templates.
 
     - The platform provides various specifications of parameter templates for use by any MySQL-PXC instance in the cluster. Each specification of the parameter template is configured with system parameters such as `innodb_flush_log_at_trx_commit = 1` and `sync_binlog = 1`, which help improve MySQL security.
 
@@ -46,7 +46,7 @@ Modifying parameter configurations will restart the Pods one by one, potentially
 
     After updating existing parameter configurations for the instance, MySQL replicas will automatically restart in order to apply the changes.
 
-    ##### Operation Steps
+    ##### Procedure
 
     1. Click on **MySQL-PXC** in the left navigation bar.
 
@@ -62,7 +62,7 @@ Modifying parameter configurations will restart the Pods one by one, potentially
 
     6. Click on **Update**.
 
-    ##### Related Operations
+    ##### Useful Note
 
     If you need to reuse the parameter configuration of another instance, you can click on export parameters in the source instance's **Parameter Configuration** tab and refer to the parameter template to create a custom template and import parameters in bulk.
   </Tab>
