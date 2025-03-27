@@ -1,20 +1,22 @@
 ---
 weight: 40
-sourceSHA: 217b7d67d566e66d294ca24d8b2fde41484c56a838ed57a6bb10b8cd8ca92d91
+sourceSHA: fe371d3a83f97cc3c51cfc6f56e607690a944c8091687f4902bdc5d4b1051763
 ---
+
 # 架构
-Percona XtraDB Cluster (PXC) 是一款开源解决方案，旨在为 MySQL 数据库提供高可用性和可扩展性。它将 Percona Server 与 Galera 库集成，实现同步多主复制，确保所有节点之间的数据一致性。
 
-## Percona XtraDB Cluster 的特性
+*Percona XtraDB Cluster* 集成了运行于 XtraDB 存储引擎的 *Percona Server for MySQL* 以及 *Percona XtraBackup* 和 *Galera library*，以实现同步多主复制。
 
-| 特性                             | 详细信息                                                                                                   |
-| -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **同步复制**                     | 数据在所有节点上同时写入，或在单个节点出现故障的情况下完全不写入。                                        |
-| **多源复制**                     | 任何节点都可以触发数据更新。                                                                             |
-| **真正的并行复制**               | 在从节点上，多个线程执行行级复制。                                                                       |
-| **自动节点配置**                 | 只需添加一个节点，系统将自动进行同步。                                                                   |
-| **数据一致性**                   | 不再有不同步的节点。                                                                                     |
-| **PXC 严格模式**                 | 避免使用技术预览功能和不受支持的功能。                                                                   |
-| **优化性能**                     | Percona XtraDB Cluster 的性能经过优化，以适应不断增长的生产工作负载。                                   |
+操作员的设计与 Percona XtraDB Cluster 的高可用性实现密切相关，这一实现可以通过以下图表简要描述。
 
-![pxc arch](./assets/pxc_arch.svg)
+![image](./assets/replication.svg)
+
+作为一个常规的 MySQL 服务器实例，每个节点包含在节点间同步的相同数据集。推荐配置至少包含 3 个节点。在基本设置中, 当节点数量达到此要求时，Percona XtraDB Cluster 提供高可用性，如果任何节点宕机，系统仍然可以继续运行。此外，可以通过 HAProxy 路由器实现负载均衡，HAProxy 接收来自 MySQL 客户端的流量并将其转发至后端的 MySQL 服务器。
+
+为了提供高可用性，操作员使用 [node affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) 在可能的情况下在不同的工作节点上运行 Percona XtraDB Cluster 实例。如果某个节点发生故障，相关的 Pod 将自动在另一个节点上重新创建。
+
+![image](./assets/operator.svg)
+
+Kubernetes 使用持久卷为有状态应用程序提供数据存储。*PersistentVolumeClaim* (PVC) 用于实现对 Pods 的自动存储供给。如果发生故障，容器存储接口 (CSI) 应能够在不同的节点上重新挂载存储。PVC 的 StorageClass 必须支持此功能。
+
+操作员功能扩展了 Kubernetes API，新增了 *PerconaXtraDBCluster* 对象，并作为 Golang 应用程序实现。每个 *PerconaXtraDBCluster* 对象映射到一个独立的 Percona XtraDB Cluster 设置。操作员监听所有已创建对象的事件。当创建新的 PerconaXtraDBCluster 对象，或现有对象发生更改或删除时，操作员将自动创建/更改/删除所有需要的 Kubernetes 对象，并设置适当的配置，以确保 Percona XtraDB Cluster 的正常运行。

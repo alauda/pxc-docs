@@ -1,0 +1,63 @@
+---
+weight: 17
+---
+
+# Patch Version Upgrade Strategy
+With the release of vulnerability fixes or new features,  Alauda Database Service for MySQL-PXC will do patch version upgrades. During these patch version upgrades, container groups will be restarted one by one, 
+It is recommended to choose an appropriate time window for the upgrade. When an upgradeable patch version appears, it is advised to upgrade as soon as possible to apply the latest fixes to the components.
+
+## Set Patch Version Upgrade Strategy
+
+### Procedure
+
+<Tabs>
+  <Tab label="web Console">
+
+1. Go to the instance details page.
+
+2. Click **Patch Version Upgrade Strategy**.
+
+3. Choose **Manual** or **Automatic** as needed.
+
+4. Click **Update** to complete the setup.
+
+## Patch Version Upgrade
+
+### Prerequisites
+
+When an upgradable patch version is available, an upgrade icon will be displayed in the instance list, and an upgrade prompt will appear on the instance details page.
+
+### Steps
+
+1. Go to the instance details page.
+
+2. Click **Upgrade Now** next to the upgrade prompt.
+
+3. Read the upgrade prompt to understand the version changes of the components and plugins.
+
+4. Click **Upgrade Now**.
+
+5. Wait for the instance to change to running status. The upgrade is successful.
+
+## Batch Patch Version Upgrade
+
+### Prerequisites
+
+The user must have platform administrator permissions.
+
+### Steps
+
+1. In the left navigation bar, click **Operators**.
+
+2. Click **operator** to enter the operator details page.
+
+3. Select the instances to be upgraded, and click **Batch Upgrade**.
+
+4. Read the upgrade prompt to understand the version changes of the components and plugins.
+
+5. Click **Upgrade Now**.
+
+6. Wait for the instances to change to running status. The upgrade is successful.
+ 
+</Tab>
+</Tabs>

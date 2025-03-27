@@ -1,5 +1,5 @@
 ---
-sourceSHA: 4408e68ac90d9a2b04fc71045113fcb85c876d5531d117d3852960c398496bf4
+sourceSHA: 0a4be308d4e01faa75cef72784bb8c3b038973541e35b70c6b1adebbd9c17bc1
 ---
 
 # 备份与恢复
@@ -8,11 +8,11 @@ sourceSHA: 4408e68ac90d9a2b04fc71045113fcb85c876d5531d117d3852960c398496bf4
 
 ## 前提条件
 
-在进行备份之前，请根据数据量声明存储。您可以选择以下两种方法之一。
+在进行备份之前，请声明存储位置。您可以选择以下两种方法之一。
 
-- 持久卷声明（PVC，Kubernetes PersistentVolumeClaim）：持久卷声明封装了对存储资源的请求配置，并根据请求的访问模式、存储大小和其他信息，自动匹配集群中合适的持久卷。您可以在容器平台（Container Platform）中配置持久卷声明。
+- 持久卷声明（PVC，Kubernetes PersistentVolumeClaim）：持久卷声明封装了对存储资源的请求配置，并根据请求的访问模式、存储大小和其他信息，自动匹配集群中合适的持久卷。
 
-- 外部 S3 存储：S3（Amazon Simple Storage Service）是亚马逊提供的一种对象存储服务。如果您需要将数据备份到您自己的 S3 存储桶，请与管理员确认该 S3 存储已成功集成到您的项目中。
+- 外部 S3 存储：S3（Amazon Simple Storage Service）是亚马逊提供的一种对象存储服务。如果您需要将数据备份到您自己的 S3 存储桶，请与管理员确认该 S3 存储已集成到您的项目中。
 
 ## 操作步骤
 
@@ -56,7 +56,7 @@ sourceSHA: 4408e68ac90d9a2b04fc71045113fcb85c876d5531d117d3852960c398496bf4
       pxc:
         backup:
           storages:
-            $(storageName):
+            <storageName>:
               type: s3
               s3:
                 bucket: <bucket>
@@ -65,7 +65,7 @@ sourceSHA: 4408e68ac90d9a2b04fc71045113fcb85c876d5531d117d3852960c398496bf4
     ```
 
     2. 自动备份
-       在 CR 的 spec.pxc.backup 中添加自动备份配置，其中 schedule 字段定义备份周期。storageName 字段指的是在第 1 步创建的备份存储名称。
+       在 CR 的 spec.pxc.backup 中添加自动备份配置，其中 schedule 字段定义备份周期。`<storageName>` 字段指的是在第 1 步创建的备份存储名称。
 
     ```bash
     kubectl patch mysql -n $namespace $name --type='merge' --patch '
@@ -124,7 +124,7 @@ sourceSHA: 4408e68ac90d9a2b04fc71045113fcb85c876d5531d117d3852960c398496bf4
   <Tab label="Web Console">
     #### 立即备份（全量）
 
-    立即备份正在运行中的 MySQL-PXC 实例。
+    立即备份正在运行的 MySQL-PXC 实例。
 
     ##### 前提条件
 
@@ -202,6 +202,6 @@ sourceSHA: 4408e68ac90d9a2b04fc71045113fcb85c876d5531d117d3852960c398496bf4
 
     4. 在 **备份与恢复** 标签页中，单击 **删除** 并确认。
 
-       当 S3 备份数据被删除时，S3 存储中的数据也将被删除。
+       当 S3 备份数据被删除时，存储中的数据也将被删除。
   </Tab>
 </Tabs>
