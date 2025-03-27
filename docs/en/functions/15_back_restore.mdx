@@ -1,5 +1,5 @@
 ---
-sourceSHA: df0cded3e407d1481ee0fa8bb3b3c2c354045d9f07e57b23367768ca55a19a40
+weight: 15
 ---
 
 # Backup & Restore 
@@ -8,13 +8,13 @@ Database backup and recovery are vital functions for ensuring data security and 
 
 ## Prerequisites
 
-Before performing a backup, please declare storage based on the volume of data. You may choose one of the following two methods.
+Before performing a backup, please declare storage location. You may choose one of the following two methods.
 
-- Persistent Volume Claim (PVC, Kubernetes PersistentVolumeClaim): A persistent volume claim encapsulates the request configuration for storage resources and automatically matches suitable persistent volumes in the cluster based on the requested access mode, storage size, and other information. You can configure the persistent volume claim in the Container Platform.
+- Persistent Volume Claim (PVC, Kubernetes PersistentVolumeClaim): A persistent volume claim encapsulates the request configuration for storage resources and automatically matches suitable persistent volumes in the cluster based on the requested access mode, storage size, and other information.
 
 - External S3 Storage: S3 (Amazon Simple Storage Service) is an object storage service provided by Amazon. If you need to back up data to your own S3 bucket, please confirm with the administrator that the S3 storage has been integrated into your project.
 
-## Operational Steps
+## Procedure
 
 <Tabs>
   <Tab label="CLI">
@@ -55,7 +55,7 @@ Before performing a backup, please declare storage based on the volume of data. 
       pxc:
         backup:
           storages:
-            $(storageName):
+            <storageName>:
               type: s3
               s3:
                 bucket: <bucket>
@@ -64,7 +64,7 @@ Before performing a backup, please declare storage based on the volume of data. 
     ```
 
     2. Automatic Backup
-       Add the automatic backup configuration in the CR's spec.pxc.backup, where the schedule field defines the backup cycle. The storageName field refers to the backup storage name created in Step 1.
+       Add the automatic backup configuration in the CR's spec.pxc.backup, where the schedule field defines the backup cycle. The `<storageName>` field refers to the backup storage name created in Step 1.
 
     ```bash
     kubectl patch mysql -n $namespace $name --type='merge' --patch '
@@ -137,7 +137,7 @@ Before performing a backup, please declare storage based on the volume of data. 
 
     3. Click the ***instance name***.
 
-    4. Click **Create Data Backup** in the **Backup and Recovery** tab.
+    4. Click **Create Data Backup** in the **Backup & Recovery** tab.
 
     5. Set the parameters and click **Create**. The duration of the backup depends on the volume of data and network conditions; please be patient.
 

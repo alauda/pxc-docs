@@ -1,16 +1,16 @@
 ---
-sourceSHA: b4d05015b5417ebad7b17bcfcbafb0c0ce06dcd91c28fc431479ff6ad0719275
+sourceSHA: 95541914401c5de3880453637cc9caa80c409eb99dfecfeefdd0b016cae530cc
 ---
 
 # 日志
 
-了解实例运行时在容器级别的日志，如 MySQL 错误日志。正确使用日志可以帮助您快速定位问题并处理故障和异常。
+日志提供了有价值的信息。检查数据库 Pods 和 Operator Pod 的日志是有意义的。以下标志在使用 kubectl logs 命令检查日志时非常有用。
 
 ## 操作步骤
 
 <Tabs>
   <Tab label="CLI">
-    1. 检查实例的所有相关 Pods，包括 pxc pod 和 proxysql pod。
+    1. 检查与实例相关的所有 Pods，包括 pxc pod 和 proxysql pod。
 
     ```bash
     kubectl get pod -n <namespace> -l "middleware.instance/name=<name>"
