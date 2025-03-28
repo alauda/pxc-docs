@@ -9,4 +9,6 @@ title: Upgrade
 
 # Upgrade
 
-Alauda Database Service for MySQL-PXC are designed to upgrade automatically during platform upgrades, requiring no manual intervention. The system handles all necessary migrations and updates seamlessly in the background.
+Alauda Database Service for MySQL-PXC will execute upgrades based on the configured upgrade strategy:
+- **Automatic** : Auto-upgrades are triggered immediately upon detecting new component versions.
+- **Manual** : Requires manual approval before initiating the upgrade process.
