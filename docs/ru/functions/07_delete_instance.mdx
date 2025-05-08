@@ -1,0 +1,45 @@
+---
+weight: 7
+sourceSHA: d0c2ca082f9fc8b1bdb3b483b7b65179b7be1ba7ef0800c2bed8e1496323026f
+---
+
+# Удалить экземпляр
+
+Эта функция используется для удаления экземпляров MySQL-PXC. Пользователи могут удалить заданный экземпляр, указав имя экземпляра и пространство имен. После удаления экземпляра вы можете выбрать, сохранять ли данные экземпляра. Если данные экземпляра не будут сохранены, они будут безвозвратно удалены и не подлежат восстановлению.
+
+## Процедура
+
+<Tabs>
+  <Tab label="CLI">
+    1. Определите, сохранять ли данные
+
+    - Сохранить данные
+
+    ```bash
+    kubectl patch mysql -n <namespace> <name> --type json -p '[{"op": "add", "path": "/metadata/finalizers/-", "value": "delete-pvc"}]'
+    ```
+
+    - Удалить данные
+
+    ```bash
+    current_finalizers=$(kubectl get mysql -n <namespace> <name> -o jsonpath='{.metadata.finalizers}' | jq --arg f "delete-pvc" 'map(select(. != $f))')
+    kubectl patch mysql -n <namespace> <name> --type merge -p "{\"metadata\":{\"finalizers\":$current_finalizers}}"
+    ```
+
+    2. Удалите экземпляр
+
+    ```bash
+    kubectl delete mysql -n <namespace> <name>
+    ```
+  </Tab>
+
+  <Tab label="Веб-консоль">
+    1. Щелкните MySQL-PXC в левой панели навигации.
+
+    2. Щелкните на имя пространства имен.
+
+    3. Щелкните на имя экземпляра.
+
+    4. Щелкните на Действия > Удалить и подтвердите.
+  </Tab>
+</Tabs>
