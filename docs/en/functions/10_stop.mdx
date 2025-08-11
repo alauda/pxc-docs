@@ -17,7 +17,7 @@ Starting an instance requires the instance to be in **Stopping** or **Stopped** 
 
 <Tabs>
   <Tab label="CLI">
-    #### Stop Instance
+    ### Stop Instance
 
     ```bash
     kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
@@ -26,7 +26,7 @@ Starting an instance requires the instance to be in **Stopping** or **Stopped** 
     '
     ```
 
-    #### Start Instance
+    ### Start Instance
 
     ```bash
     kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
