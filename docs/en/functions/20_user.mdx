@@ -7,7 +7,6 @@ weight: 20
 This feature provides a graphical user management function. It is recommended that you assign database users correspondingly to database developers based on usage needs.
 
 ## Prerequisites
-## Prerequisites
 
 Ensure that the instance is in **Running** status.
 
@@ -17,7 +16,7 @@ Create a user and configure permissions for that user. The platform will simulta
 
 <Tabs>
   <Tab label="Web Console">
-    #### Create User
+    ### Create User
 
     1. Click **MySQL-PXC** in the left navigation bar.
 
@@ -35,7 +34,7 @@ Create a user and configure permissions for that user. The platform will simulta
 
     7. Click **Create**.
 
-    #### Add Secret Dictionary (for Non-Platform Created Users)
+    ### Add Secret Dictionary (for Non-Platform Created Users)
 
     If a database user was created through a non-platform method, please manually create the corresponding Secret Dictionary for them. The **Secret Dictionary** is the user authentication credentials used by Kubernetes resources. If an application needs to use MySQL, the MySQL username and password can be referenced in Pods through the Secret Dictionary.
 
@@ -49,7 +48,7 @@ Create a user and configure permissions for that user. The platform will simulta
 
     5. Enter the password set during user creation, then click **Add**.
 
-    #### Update User
+    ### Update User
 
     1. Click **MySQL-PXC** in the left navigation bar.
 

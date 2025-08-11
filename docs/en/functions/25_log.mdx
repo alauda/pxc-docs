@@ -11,15 +11,15 @@ Logs provide valuable information. It makes sense to check the logs of the datab
   <Tab label="CLI">
     1. Check all related pods of the instance, including pxc pod and proxysql pod.
 
-    ```bash
-    kubectl get pod -n <namespace> -l "middleware.instance/name=<name>"
-    ```
+        ```bash
+        kubectl get pod -n <namespace> -l "middleware.instance/name=<name>"
+        ```
 
     2. View log queries for a specific pod
 
-    ```bash
-    kubectl logs -n <namespace> <pod>
-    ```
+        ```bash
+        kubectl logs -n <namespace> <pod>
+        ```
   </Tab>
 
   <Tab label="Web Console">
