@@ -29,7 +29,7 @@ If the instance fails to start or is abnormal, meaning the instance is in a Proc
 
 <Tabs>
   <Tab label="CLI">
-    1. Restart the instance
+    Restart the instance
 
     ```bash
     kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
@@ -40,7 +40,7 @@ If the instance fails to start or is abnormal, meaning the instance is in a Proc
                   percona.com/Restart-time: '$(date -u +'%Y-%m-%dT%H:%M:%SZ')'
           proxysql:
               annotations:
-                  percona.com/Restart-time: '$(date -u +'%Y-%m-%dT%H:%M:%SZ')'    
+                  percona.com/Restart-time: '$(date -u +'%Y-%m-%dT%H:%M:%SZ')'
     '
     ```
   </Tab>

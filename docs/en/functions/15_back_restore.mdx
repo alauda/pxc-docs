@@ -2,7 +2,7 @@
 weight: 15
 ---
 
-# Backup & Restore 
+# Backup & Restore
 
 Database backup and recovery are vital functions for ensuring data security and business continuity. By regularly backing up the database, data can be quickly restored in the event of data loss, corruption, or operational errors, thereby minimizing business disruption and data loss.
 
@@ -20,116 +20,118 @@ Before performing a backup, please declare storage location. You may choose one 
   <Tab label="CLI">
     1. Configure Storage Location
 
-    - Using PVC for storage
+      - Using PVC for storage
 
-    ```bash
-    kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
-    spec:
-      pxc:
-        backup:
-          storages:
-            <storageName>:
-              type: filesystem
-              volume:
-                persistentVolumeClaim:
-                  accessModes:
-                    - ReadWriteOnce
-                  resources:
-                    requests:
-                      storage: <size>Gi
-                  storageClassName: <storageClass>
-    ```
+          ```bash
+          kubectl patch mysql -n <namespace> <name> --type='merge' --patch '
+          spec:
+            pxc:
+              backup:
+                storages:
+                  <storageName>:
+                    type: filesystem
+                    volume:
+                      persistentVolumeClaim:
+                        accessModes:
+                          - ReadWriteOnce
+                        resources:
+                          requests:
+                            storage: <size>Gi
+                        storageClassName: <storageClass>
+          ```
 
-    - Using S3 for storage
-      Create S3 secret
+      - Using S3 for storage
 
-    ```bash
-    kubectl -n <namespace> create secret generic <backupSecretName> --from-literal=AWS_ACCESS_KEY_ID=$(accessKeyId) --from-literal=AWS_SECRET_ACCESS_KEY=$(secretAccessKey)
-    ```
+        - Create S3 secret
 
-    Configure S3 storage
+          ```bash
+          kubectl -n <namespace> create secret generic <backupSecretName> --from-literal=AWS_ACCESS_KEY_ID=$(accessKeyId) --from-literal=AWS_SECRET_ACCESS_KEY=$(secretAccessKey)
+          ```
 
-    ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
-    spec:
-      pxc:
-        backup:
-          storages:
-            <storageName>:
-              type: s3
-              s3:
-                bucket: <bucket>
-                credentialsSecret: <backupSecretName>
-                endpointUrl: <endpointUrl>
-    ```
+        - Configure S3 storage
+
+          ```bash
+          kubectl patch mysql -n $namespace $name --type='merge' --patch '
+          spec:
+            pxc:
+              backup:
+                storages:
+                  <storageName>:
+                    type: s3
+                    s3:
+                      bucket: <bucket>
+                      credentialsSecret: <backupSecretName>
+                      endpointUrl: <endpointUrl>
+          ```
 
     2. Automatic Backup
        Add the automatic backup configuration in the CR's spec.pxc.backup, where the schedule field defines the backup cycle. The `<storageName>` field refers to the backup storage name created in Step 1.
 
-    ```bash
-    kubectl patch mysql -n $namespace $name --type='merge' --patch '
-    spec:
-      pxc:
-        backup:
-          schedule:
-          - keep: 5
-            name: daily-backup
-            schedule: 0 0 * * *
-            storageName: <storageName>
-    '
-    ```
+        ```bash
+        kubectl patch mysql -n $namespace $name --type='merge' --patch '
+        spec:
+          pxc:
+            backup:
+              schedule:
+              - keep: 5
+                name: daily-backup
+                schedule: 0 0 * * *
+                storageName: <storageName>
+        '
+        ```
 
     3. Manual Backup
 
-    ```bash
-    kubectl -n <namespace> apply -f - <<EOF
-    apiVersion: pxc.percona.com/v1
-    kind: PerconaXtraDBClusterBackup
-    metadata:
-      labels:
-        cluster: <name>
-        trigger.type: manual
-      name: <backupName>
-      namespace: <namespace>
-    spec:
-      pxcCluster: <name>
-      storageName: <storageName>
-    EOF
-    ```
+        ```bash
+        kubectl -n <namespace> apply -f - <<EOF
+        apiVersion: pxc.percona.com/v1
+        kind: PerconaXtraDBClusterBackup
+        metadata:
+          labels:
+            cluster: <name>
+            trigger.type: manual
+          name: <backupName>
+          namespace: <namespace>
+        spec:
+          pxcCluster: <name>
+          storageName: <storageName>
+        EOF
+        ```
 
     4. Check Backup Status
 
-    ```bash
-    kubectl get PerconaXtraDBClusterBackup -n <namespace> <backupName> 
-    ```
+        ```bash
+        kubectl get PerconaXtraDBClusterBackup -n <namespace> <backupName>
+        ```
 
     5. Restore Using Backup
 
-    ```bash
-    apiVersion: pxc.percona.com/v1
-    kind: PerconaXtraDBClusterRestore
-    metadata:
-      labels:
-        cluster: <name>
-      name: <restoreName>
-      namespace: <namespace>
-    spec:
-      backupName: <backupName>
-      pxcCluster: <name>
-    EOF
-    ```
+        ```bash
+        kubectl -n <namespace> apply -f - <<EOF
+        apiVersion: pxc.percona.com/v1
+        kind: PerconaXtraDBClusterRestore
+        metadata:
+          labels:
+            cluster: <name>
+          name: <restoreName>
+          namespace: <namespace>
+        spec:
+          backupName: <backupName>
+          pxcCluster: <name>
+        EOF
+        ```
   </Tab>
 
   <Tab label="Web Console">
-    #### Immediate Backup (Full)
+    ### Immediate Backup (Full)
 
     Immediately back up the running MySQL-PXC instance.
 
-    ##### Prerequisites
+    #### Prerequisites
 
     Ensure the instance is in **Running** status.
 
-    ##### Procedure
+    #### Procedure
 
     1. Click **MySQL-PXC** in the left navigation bar.
 
@@ -141,11 +143,11 @@ Before performing a backup, please declare storage location. You may choose one 
 
     5. Set the parameters and click **Create**. The duration of the backup depends on the volume of data and network conditions; please be patient.
 
-    #### Automatic Backup (Full)
+    ### Automatic Backup (Full)
 
     Specify the backup time; after it reaches the designated time, the platform will automatically back up the MySQL-PXC instance and perform periodic backups.
 
-    ##### Procedure
+    #### Procedure
 
     1. Click **MySQL-PXC** in the left navigation bar.
 
@@ -167,15 +169,15 @@ Before performing a backup, please declare storage location. You may choose one 
 
     - If it is time for automatic backup but the instance is not in **Running** status, the platform will wait until the instance is ready to start the backup.
 
-    #### Restore Instance
+    ### Restore Instance
 
     Restore backup data to the target instance.
 
-    ##### Prerequisites
+    #### Prerequisites
 
     Ensure the target instance is in **Running** status.
 
-    ##### Procedure
+    #### Procedure
 
     1. Click **MySQL-PXC** in the left navigation bar.
 
@@ -187,11 +189,11 @@ Before performing a backup, please declare storage location. You may choose one 
 
     5. Select the target instance and click **Restore**. Please be patient until the target instance shows **Restore Successful** status.
 
-    #### Delete Backup
+    ### Delete Backup
 
     Supports the deletion of backup data.
 
-    ##### Procedure
+    #### Procedure
 
     1. Click **MySQL-PXC** in the left navigation bar.
 

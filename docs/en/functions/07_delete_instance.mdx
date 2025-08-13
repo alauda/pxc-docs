@@ -13,23 +13,24 @@ This feature is used to delete MySQL-PXC instances. Users can delete a specified
   <Tab label="CLI">
     1. Determine whether to retain data
 
-    - Retain data 
-    ```bash
-    kubectl patch mysql -n <namespace> <name> --type json -p '[{"op": "add", "path": "/metadata/finalizers/-", "value": "delete-pvc"}]'
-    ```
+    - Retain data
 
-    - Delete data 
+        ```bash
+        kubectl patch mysql -n <namespace> <name> --type json -p '[{"op": "add", "path": "/metadata/finalizers/-", "value": "delete-pvc"}]'
+        ```
 
-    ```bash
-    current_finalizers=$(kubectl get mysql -n <namespace> <name> -o jsonpath='{.metadata.finalizers}' | jq --arg f "delete-pvc" 'map(select(. != $f))')
-    kubectl patch mysql -n <namespace> <name> --type merge -p "{\"metadata\":{\"finalizers\":$current_finalizers}}"
-    ```
+    - Delete data
+
+        ```bash
+        current_finalizers=$(kubectl get mysql -n <namespace> <name> -o jsonpath='{.metadata.finalizers}' | jq --arg f "delete-pvc" 'map(select(. != $f))')
+        kubectl patch mysql -n <namespace> <name> --type merge -p "{\"metadata\":{\"finalizers\":$current_finalizers}}"
+        ```
 
     2. Delete the instance
 
-    ```bash
-    kubectl delete mysql -n <namespace> <name>
-    ```
+        ```bash
+        kubectl delete mysql -n <namespace> <name>
+        ```
   </Tab>
 
   <Tab label="Web Console">
