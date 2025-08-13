@@ -41,7 +41,7 @@ sourceSHA: 47ed496a64c82fd82bb3d9292b48e67de74524f03fddd01f9a8cb9721d22200e
 
   - To find tables in the business database that lack a primary key:
 
-      ```
+      ```sql
       SELECT
           CONCAT(t1.TABLE_SCHEMA, '.', t1.TABLE_NAME)
       FROM
@@ -61,7 +61,7 @@ sourceSHA: 47ed496a64c82fd82bb3d9292b48e67de74524f03fddd01f9a8cb9721d22200e
 
   - Add an auto-incrementing primary key:
 
-      ```
+      ```sql
       ALTER TABLE table_name ADD COLUMN id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY;
       ```
 
