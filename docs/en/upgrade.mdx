@@ -9,6 +9,45 @@ title: Upgrade
 
 # Upgrade
 
+:::note
+
+This document provides the upgrade path principles and supported version compatibility for Alauda Database Service for MySQL-PXC.
+:::
+
+## Upgrade Paths
+
+### Compatibility Matrix
+
+The table below lists supported versions of the Alauda Database Service for MySQL-PXC and its key components:
+
+| Alauda MySQL-PXC Version |  MySQL Versions                | Kubernetes Versions |
+|:--------------------:|:------------------------------:|:-------------------:|
+| v4.1.x               | 5.7                       | 1.25+               |
+| v4.0.x               | 5.7                       | 1.25+               |
+
+## Prerequisites
+
+Before initiating an upgrade, please ensure the following:
+
+1. **Version Compatibility**: Your current version falls within a supported upgrade path.
+2. **Component Health**: MySQL instances are in a `Ready` state.
+3. **Resource Availability**: The cluster has sufficient resources to support the upgrade process.
+
+## Upgrade Path Guidelines
+
+### Consecutive Upgrade (Recommended)
+- **Description**: Upgrade step-by-step through consecutive minor versions.
+- **Example**: `4.1.x → 4.2.x`
+
+### Patch-Level Upgrade
+- **Description**: Patch upgrades within the same minor version are fully compatible.
+- **Example**: `4.1.0 → 4.1.x`
+
+## Upgrade Process Reference
+- 📝 **[Release Notes](./release_notes.mdx)**: Version-specific changes, new features, and deprecations
+
+## Upgrade Strategies
+
 Alauda Database Service for MySQL-PXC will execute upgrades based on the configured upgrade strategy:
 - **Automatic** : Auto-upgrades are triggered immediately upon detecting new component versions.
 - **Manual** : Requires manual approval before initiating the upgrade process.
