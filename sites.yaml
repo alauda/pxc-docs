@@ -1,6 +1,6 @@
 - name: acp
   base: /container_platform
-  version: "fix-plugin-name"
+  version: "4.3"
 - name: mysql-mgr
   base: /mysql-mgr
   version: "4.3"
