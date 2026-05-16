@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "generator_version": 3,
+  "project_name": "Alauda Database Service for MySQL (PXC)",
+  "summary": "Kubernetes-native MySQL clusters built on Percona XtraDB Cluster (PXC), managed by an operator that automates deployment, backup, failover, and scaling.",
+  "generated_at": "2026-05-16T09:49:31Z",
+  "include_patterns": [
+    "**/*.md",
+    "**/*.mdx"
+  ],
+  "exclude_patterns": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/.yarn/**",
+    "**/.builds/**",
+    "**/.cspell/**",
+    "**/.github/**",
+    "**/.tekton/**",
+    "**/theme/**",
+    "**/llms.txt",
+    "**/llmstxt-state.json",
+    "**/CHANGELOG.md",
+    "**/CONTRIBUTING.md",
+    "README.md",
+    ".llmstxt-cache/**",
+    "**/.llmstxt-cache/**",
+    "llms.txt",
+    "llmstxt-state.json"
+  ],
+  "grouping_base_path": "docs",
+  "description_max_words": 150,
+  "files": {
+    "docs/en/apis/index.mdx": {
+      "sha256": "2073d0de91a2a92eede5a20884b99e0f854ea015edd423473eb7504c296642c5",
+      "size": 109,
+      "description": "Top-level entry page for the API Reference section of Alauda Database Service for MySQL-PXC, rendering an Overview component that aggregates the child API documentation pages (Kubernetes APIs for MySQL, backup, and restore CRDs).",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/apis/kubernetes_apis/backup.mdx": {
+      "sha256": "9e811aae3de6df3bde04d603af73be91ea80390fdef6291bbe36ffee347f33f1",
+      "size": 132,
+      "description": "Renders the auto-generated CRD reference for `perconaxtradbclusterbackups.pxc.percona.com` via the `K8sCrd` component, exposing the full schema (spec/status fields) of the PerconaXtraDBClusterBackup resource that drives manual and scheduled PXC backups.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/apis/kubernetes_apis/index.mdx": {
+      "sha256": "fb3c9c75da93671fd1f928d8691b6477ed52d0a2f8f5f8ef743e91919c489682",
+      "size": 110,
+      "description": "Landing page for the MySQL-PXC Kubernetes APIs section, providing navigation to the CRD references for the `Mysql` resource (middleware.alauda.io), PerconaXtraDBClusterBackup, and PerconaXtraDBClusterRestore through an Overview component.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/apis/kubernetes_apis/mysql.mdx": {
+      "sha256": "91a263910ed1e5b979396180a9c638ff611be6515813c15e01e66c0bc27dcfd4",
+      "size": 104,
+      "description": "Renders the CRD reference for `mysqls.middleware.alauda.io`, the top-level Custom Resource managed by the Alauda MySQL operator that wraps PXC and ProxySQL specs, parameter configuration, backup/restore settings, and upgrade options for a database instance.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/apis/kubernetes_apis/restore.mdx": {
+      "sha256": "739f9ed14f98cd9c4bbc9e39b1299a9300a77fcf550bd6e739985c7f7feb1552",
+      "size": 134,
+      "description": "Renders the CRD reference for `perconaxtradbclusterrestores.pxc.percona.com` via the `K8sCrd` component, documenting the PerconaXtraDBClusterRestore resource schema used to restore a PXC cluster from a named PerconaXtraDBClusterBackup.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/architecture.mdx": {
+      "sha256": "88818a4dde6fbc2ca7c03edea154be730beb6c0a7ecf02610a7d03035cb4e837",
+      "size": 2462,
+      "description": "Architectural overview of the (deprecated) MySQL-PXC operator: explains how Percona XtraDB Cluster combines Percona Server, XtraBackup, and the Galera library for synchronous multi-primary replication across at least 3 nodes, fronted by an HAProxy/ProxySQL router. Covers operator behavior — node affinity for spreading replicas, PVC/CSI-backed persistent storage, and the reconciliation of the `PerconaXtraDBCluster` CRD — and points users to the MySQL-MGR migration guide.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/01_create_instance.mdx": {
+      "sha256": "a37734a31052cef2ae439342912b672a68836826fe0b2951e59857b7d0e03ff2",
+      "size": 14962,
+      "description": "Walks through creating a MySQL-PXC instance both via `kubectl` (creating the credentials Secret with clustercheck/monitor/operator/proxyadmin/root/xtrabackup keys, then applying a `Mysql` CR with detailed `spec.params.mysql.mysqld` tuning including innodb_*, wsrep_*, pxc_strict_mode, and ProxySQL/PXC resource and PVC sizing) and via the web console. Includes prerequisites on compatible StorageClasses (TopoLVM recommended) and a notes table on parameter, resource, account, scheduling, and Pod toleration configuration.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/03_param.mdx": {
+      "sha256": "9f00437febb5cb317c1d4a0b4256624d46c3ad74c2334f3ea14426b8be9f80db",
+      "size": 3318,
+      "description": "Explains how to tune MySQL/Percona parameters for PXC instances using either `kubectl patch` against `spec.params.mysql.mysqld` (with examples for `max_connections` and `expire_logs_days`) or via the web console's parameter templates (e.g. `hhd-1c2g-pxc-template`). Notes that parameter changes trigger a rolling Pod restart and that templates can be exported from one instance and reimported as a custom template for another.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/05_access.mdx": {
+      "sha256": "447a08a6a7b4df08f9230cf0d7153495ef147871016e56ba221d3ea456d71694",
+      "size": 4783,
+      "description": "Describes the connection paths to a MySQL-PXC instance: in-cluster access via the ProxySQL Service DNS (`mysql -u -p -h$name.$namespace`), and external access by patching `spec.pxc.proxysql.serviceType` to `NodePort` or `LoadBalancer`. The web-console tab covers retrieving credentials from the User Management tab, internal routing addresses, adding LoadBalancer listener ports, source-address-hash session persistence, and recommends the standard MySQL shell client.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/07_delete_instance.mdx": {
+      "sha256": "0266f959fd56b0209cfbf0c067717bae3126f72d11f164f06dc278fbb56ce926",
+      "size": 1283,
+      "description": "Details how to delete a MySQL-PXC instance with or without preserving its data. Adding the `delete-pvc` finalizer via `kubectl patch ... --type json` retains data, while removing that finalizer with a jq-filtered patch deletes the PVCs alongside the `Mysql` resource. Also documents the equivalent Web Console action menu workflow.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/10_stop.mdx": {
+      "sha256": "b0d1dfec6c22c389673e2b5c1c88aa8d30cadb61ae21351bb322aa189f87998b",
+      "size": 2269,
+      "description": "Documents the one-click pause/resume workflow for MySQL-PXC instances, implemented by patching the `spec.pause` boolean on the `Mysql` CR (or via Operations > Stop/Start in the console). Lists prerequisite instance statuses (Processing/Running/Abnormal/Unknown to stop, Stopping/Stopped to start) and the features disabled while paused — terminal console, parameter updates, backup/restore, user management, inspections, and topology view.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/13_restart.mdx": {
+      "sha256": "34e343d9c2dc8840e9e22e8722bd5a0249af6b93d631ba40789c869e833126ca",
+      "size": 1480,
+      "description": "Describes restarting a MySQL-PXC instance to recover from operational faults or excessive connections. The CLI procedure patches both `spec.pxc.pxc.annotations` and `spec.pxc.proxysql.annotations` with a `percona.com/Restart-time` timestamp; Pods are restarted one at a time, briefly interrupting service. Requires the instance to be in Running state and notes auto-restart behavior on health-check timeout.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/15_back_restore.mdx": {
+      "sha256": "9f455f9d1de4a520e88d1d111fcac904d3e05f0f78c70486ef0ab387e9bb04fd",
+      "size": 6400,
+      "description": "Full backup-and-restore guide covering both PVC-backed (`type: filesystem` with `storageClassName`) and S3-backed (`type: s3` with bucket/credentialsSecret/endpointUrl) storage configuration on `spec.pxc.backup.storages`. Documents scheduled backups via `spec.pxc.backup.schedule` (cron + `keep` retention), on-demand backups by applying a `PerconaXtraDBClusterBackup` CR, restoration via `PerconaXtraDBClusterRestore` referencing `backupName` and `pxcCluster`, and the equivalent Web Console flows for immediate/automatic backup, restore, and deletion.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/17_upgrade.mdx": {
+      "sha256": "7d908faf9eff13d450f13af8b3aa67ca0396f1b2e1b25203ab1c2f33f60b8182",
+      "size": 1740,
+      "description": "Patch-version upgrade workflow for Alauda Database Service for MySQL instances. Covers configuring a Manual or Automatic Patch Version Upgrade Strategy per instance, triggering a single-instance upgrade via the Upgrade Now prompt, and performing Batch Upgrade across multiple instances from the Operators page (requires platform administrator permissions). Pods restart sequentially during the upgrade.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/18_scheduling.mdx": {
+      "sha256": "89a7cb2e2d80252a4eb5589cb06d5f9ce6c9d44eb115bdaf53e911e2ed063447",
+      "size": 4221,
+      "description": "Worked example for pinning MySQL-PXC pods to dedicated nodes using node labels and taints/tolerations. Walks through a scenario with three nodes labeled `keymysql=valuemysql` and tainted `keymysql=valuemysql:NoSchedule`, configured on the instance-creation page's Scheduling Configuration section. Explains the NoSchedule/PreferNoSchedule/NoExecute effects and the Equal/Exists toleration operators, with verification via the Container Platform > Container Groups view.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/20_user.mdx": {
+      "sha256": "6397a7e17e756a8bd23799eb9134852377ca496c4affa50204b48c756572df12",
+      "size": 2425,
+      "description": "Web console workflow for managing MySQL-PXC database users: creating users with permissions, attaching a Kubernetes Secret Dictionary that synchronizes credentials for Pods to reference, manually creating Secret Dictionaries for users created outside the platform, and updating passwords or permissions for non-root users from the Instance's User Management tab.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/25_log.mdx": {
+      "sha256": "342a8b90cfb38ad6bfdac1f2360356eec3a7a635c3ae9d447e665a8834e3a737",
+      "size": 1004,
+      "description": "Two methods to inspect MySQL-PXC instance logs: kubectl CLI commands using the label selector `middleware.instance/name=<name>` to list pxc and proxysql pods followed by `kubectl logs`, and the web console's Realtime Log tab where logs can be filtered per Pod (MySQL replica) for troubleshooting the Operator and database containers.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/30_qan.mdx": {
+      "sha256": "ed615b3fe9d9d960c58f41b4cf69c9e5000446b61243e952b4cb78766a01f074",
+      "size": 789,
+      "description": "Web console procedure for using the Query Analysis (QAN) tab on a MySQL-PXC instance to identify slow or problematic SQL statements; users filter by Time Range and search by SQL Statement keyword to surface queries that impact performance and need tuning.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/35_monitor.mdx": {
+      "sha256": "72151155f20eb967f441559291fd285633694a904036fb2795a1c2052ce111f6",
+      "size": 5034,
+      "description": "Reference table of the built-in MySQL-PXC monitoring metrics surfaced in the instance Monitoring tab, including Pod CPU/memory utilization, PVC usage, network throughput, MySQL Connections (default max 151), Threads Connected/Running, table locks, sorts, slow queries (long_query_time), InnoDB Buffer Pool Requests, TPS, and command counts — used for alerting policy configuration, operational inspection, and performance tuning.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/functions/index.mdx": {
+      "sha256": "822ddd63d17bf9feb20626aae6c2e4cd945e61397548acdacc4c709f27e1a548",
+      "size": 188,
+      "description": "Top-level landing page for the MySQL-PXC Guides section (weight 50), rendered with an `<Overview />` component that auto-lists the child pages covering user management, logs, query analysis, and monitoring.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/how_to/10_storage_scale.mdx": {
+      "sha256": "39a136ac86696fa74ee780250ca93c89e747fc8e0d7b53a828afe83604900db2",
+      "size": 964,
+      "description": "Web console procedure for online volume expansion of a MySQL-PXC instance: from the Details tab, expand individual persistent volume claims or bulk-expand multiple PVCs by entering the new target capacity, allowing storage growth without service interruption as data volume approaches the storage quota.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/how_to/20_switch_write.mdx": {
+      "sha256": "f0c68da804bbb50b74c3ac1f1c13c764e100527a004da3d1b7cbf357265db1c7",
+      "size": 643,
+      "description": "Web console procedure to promote a specific MySQL-PXC node to read-write mode from the instance's Topology tab using the Set to Read-Write action, with guidance to evaluate business impact and prefer off-peak windows because the switch affects routing.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/how_to/index.mdx": {
+      "sha256": "ee928ef5458fe77f409b6216284b1902e0abc5cc285c3289128312f55cae3a4d",
+      "size": 191,
+      "description": "Landing page for the MySQL-PXC Practical Guide (HowTo) section (weight 60), rendered via the `<Overview />` component to list operational task guides such as storage expansion and read-write mode switching.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/index.mdx": {
+      "sha256": "6445f4074f13b05ea53765739120ba5c358eed2e67ed98f73b63b88c8b3d3818",
+      "size": 565,
+      "description": "Root navigation page for the Alauda Database Service for MySQL-PXC docs, displaying the deprecation notice that MySQL-PXC is no longer managed by the MySQL operator and pointing users to the MySQL-MGR migration guide; renders an empty `<Overview overviewHeaders={[]} />` so child sections fill the index.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/installation.mdx": {
+      "sha256": "ff2c603ca8ee38147676cfa5dde7828542a0310a9395d2c76d18d359768457ad",
+      "size": 4626,
+      "description": "Step-by-step OperatorHub deployment guide for the three components required to run MySQL-PXC on the platform: the Alauda Container Platform Data Services Essentials cluster plugin (deployed in the global cluster from Marketplace > Cluster Plugins), the Data Services RDS Framework Operator, and the Alauda Database Service for MySQL Operator, with recommended parameters for Upgrade Strategy (Manual), Deployment Mode (Cluster), Channel (stable), and namespace selection.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/intro.mdx": {
+      "sha256": "b12cb953ac60ac4cec90cc2fba1298d115a5534a1c12e98cd80311f2c07fe5e4",
+      "size": 2862,
+      "description": "Product introduction for Alauda Database Service for MySQL, a Kubernetes-native solution built on Percona XtraDB Cluster (PXC) that automates provisioning, backups, failover, and scaling; lists seven key feature pillars — automated deployment/scaling, high availability via synchronous replication, self-healing, backup/restore, RBAC-integrated encryption, kubectl-native operations, and multi-cloud flexibility — and carries the MySQL-MGR deprecation banner.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/release_notes.mdx": {
+      "sha256": "d73edae632c0ac87aff1012c20e58fb0e1185a6f600b3b7498749221140b4747",
+      "size": 914,
+      "description": "Versioned release notes for Alauda Database Services for MySQL-PXC. v4.0.0 decouples the component lifecycle from the platform release cycle (enabling out-of-band fixes) and replaces the details-page logs with real-time logs; v4.0.1 lists fixed issues. Embedded template placeholders pull bug lists from the Middleware project.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/trouble_shooting/index.mdx": {
+      "sha256": "cb235c690055cc932a9ec8b9ca65a5d1cc902976bbaf48a392955e73ea0dab42",
+      "size": 213,
+      "description": "Landing page for the MySQL-PXC Trouble Shooting section (weight 70), rendered through the `<Overview />` component to list child troubleshooting guides such as the PXC-to-MGR migration walkthrough.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/trouble_shooting/pxc2mgr.mdx": {
+      "sha256": "a4447eb1e64bc4caff4c6ac1b2351359f06b8ac510a823d91a9dcce37a543e35",
+      "size": 27813,
+      "description": "Detailed runbook for migrating data and accounts from a deprecated MySQL-PXC cluster to a new MySQL-MGR cluster. Covers prerequisites (utf8mb4 conversion, mandatory primary keys, INVISIBLE primary key behavior), locating the read/write Pod via ProxySQL's `runtime_mysql_servers` hostgroup_id=11, freezing writes by setting `pxc.proxysql.size=0`, deploying a backup container with a TopoLVM PV/PVC, using `mysqldump --set-gtid-purged=AUTO --source-data=1 -B` against the PXC read/write Pod, restoring into the MGR PRIMARY (identified via `performance_schema.replication_group_members`), and transcribing business accounts from `mysql.user` while appending the six new MGR columns (Create_role_priv, Drop_role_priv, Password_reuse_history, Password_reuse_time, Password_require_current, User_attributes) and skipping root/system/operator/monitor/clustercheck rows.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    },
+    "docs/en/upgrade.mdx": {
+      "sha256": "1b2a4baf7dbb9569c9ca762ec25f4366da75108220a6e5d99ec7616ee459ac72",
+      "size": 796,
+      "description": "Brief reference page describing the two MySQL-PXC operator upgrade strategies: Automatic (upgrades triggered immediately when new component versions are detected) and Manual (requires explicit approval before initiating the upgrade), with the standard deprecation banner directing users toward MySQL-MGR migration.",
+      "generation_method": "ai_agent_reading",
+      "updated_at": "2026-05-16T09:49:31Z"
+    }
+  }
+}
