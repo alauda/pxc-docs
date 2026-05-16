@@ -1,0 +1,33 @@
+# llms.txt Generator Configuration for alauda/pxc-docs
+
+project_name: "Alauda Database Service for MySQL (PXC)"
+summary: "Kubernetes-native MySQL clusters built on Percona XtraDB Cluster (PXC), managed by an operator that automates deployment, backup, failover, and scaling."
+
+# File inclusion/exclusion
+include_patterns:
+  - "**/*.md"
+  - "**/*.mdx"
+
+exclude_patterns:
+  - "**/node_modules/**"
+  - "**/.git/**"
+  - "**/.yarn/**"
+  - "**/.builds/**"
+  - "**/.cspell/**"
+  - "**/.github/**"
+  - "**/.tekton/**"
+  - "**/theme/**"
+  - "**/llms.txt"
+  - "**/llmstxt-state.json"
+  - "**/CHANGELOG.md"
+  - "**/CONTRIBUTING.md"
+  - "README.md"
+
+# Start H2 grouping from this relative path. Does not limit scan depth.
+grouping_base_path: "docs"
+
+# Files per batch for AI processing
+batch_size: 15
+
+# Maximum words per generated file description
+description_max_words: 150
